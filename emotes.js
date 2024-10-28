@@ -1,67 +1,63 @@
 (function () {
-    const sessionIdlol = null;
-
-    function simulateIncomingMessage(message) {
-        const event = new Event('message');
-        Object.defineProperty(event, 'data', { value: message });
-        socket.onmessage(event);
-    }
-
-    function parseWebSocketMessage(data) {
-        try {
-            const messageStr = data.toString();
-            if (messageStr.startsWith('42[')) {
-                const jsonStr = messageStr.substring(2);
-                const [eventName, payload] = JSON.parse(jsonStr);
-                if (typeof payload === 'object') {
-                    return payload;
-                }
-                return JSON.parse(payload);
-            }
-            return null;
-        } catch (error) {
-            console.error('Error parsing WebSocket message:', error);
-            return null;
-        }
-    }
-
     const CONFIG = {
         colors: {
-            background: '#2b2e37', // Dark background
-            headerBg: '#292c35', // Updated header background color
-            buttonBg: '#34393f', // Corrected button background color
-            buttonHover: '#555555', // Button hover effect
-            accent: '#5b9bd5', // Accent color for highlights
-            border: '#404040', // Border color
-            text: '#ffffff', // White text
-            textMuted: '#cccccc', // Muted text color
-            success: '#4caf50', // Success indicator color
-            error: '#f44336', // Error indicator color
-            statusBg: '#41434c' // Status background color
+            background: 'rgba(20, 22, 29, 0.95)',
+            headerBg: 'rgba(24, 26, 34, 0.98)',
+            buttonBg: 'rgba(28, 30, 39, 0.95)',
+            buttonHover: 'rgba(35, 38, 48, 0.98)',
+            accent: 'rgba(94, 129, 209, 0.95)',
+            border: 'rgba(60, 63, 78, 0.2)',
+            text: 'rgba(237, 240, 245, 0.95)',
+            textMuted: 'rgba(179, 186, 197, 0.7)',
+            success: 'rgba(72, 187, 120, 0.9)',
+            error: 'rgba(245, 101, 101, 0.9)',
+            shortcutBg: 'rgba(40, 42, 54, 0.8)'
         },
-        animations: {
-            transition: 'all 0.2s ease-in-out'
+        shadows: {
+            container: '0 8px 24px rgba(0, 0, 0, 0.2)',
+            button: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            buttonHover: '0 2px 6px rgba(0, 0, 0, 0.15)'
         }
     };
 
-    // Create and inject required styles
     const styleSheet = document.createElement('style');
     styleSheet.textContent = `
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            17% { color: #ff8000; }
+            33% { color: #ffff00; }
+            50% { color: #00ff00; }
+            67% { color: #0080ff; }
+            83% { color: #8000ff; }
+            100% { color: #ff0000; }
+        }
+
+        @keyframes shortcutGlow {
+            0% { box-shadow: 0 0 5px #ff0000; }
+            17% { box-shadow: 0 0 5px #ff8000; }
+            33% { box-shadow: 0 0 5px #ffff00; }
+            50% { box-shadow: 0 0 5px #00ff00; }
+            67% { box-shadow: 0 0 5px #0080ff; }
+            83% { box-shadow: 0 0 5px #8000ff; }
+            100% { box-shadow: 0 0 5px #ff0000; }
+        }
+
         .emote-changer {
-            --shadow-color: rgba(0, 0, 0, 0.4);
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 320px;
+            top: 15px;
+            left: 15px;
+            width: 280px;
             background: ${CONFIG.colors.background};
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid ${CONFIG.colors.border};
-            border-radius: 12px; /* Increased border-radius */
-            box-shadow: 0 4px 8px var(--shadow-color);
+            border-radius: 12px;
+            box-shadow: ${CONFIG.shadows.container};
             z-index: 999999;
             opacity: 0;
-            transform: translateY(-10px);
-            transition: ${CONFIG.animations.transition};
+            transform: translateY(-8px);
+            transition: all 0.2s ease-out;
         }
 
         .emote-changer.visible {
@@ -70,10 +66,10 @@
         }
 
         .emote-header {
-            background: ${CONFIG.colors.headerBg}; // Updated header background color
-            padding: 12px 16px;
+            background: ${CONFIG.colors.headerBg};
+            padding: 10px 12px;
             border-bottom: 1px solid ${CONFIG.colors.border};
-            border-radius: 12px 12px 0 0; /* Increased border-radius */
+            border-radius: 12px 12px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -83,7 +79,7 @@
 
         .emote-title {
             color: ${CONFIG.colors.text};
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             margin: 0;
         }
@@ -91,66 +87,106 @@
         .emote-close {
             background: transparent;
             border: none;
-            color: ${CONFIG.colors.text};
+            color: ${CONFIG.colors.textMuted};
             cursor: pointer;
             padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: ${CONFIG.animations.transition};
+            border-radius: 6px;
+            font-size: 18px;
+            line-height: 1;
+            transition: all 0.2s ease;
         }
 
         .emote-close:hover {
             background: ${CONFIG.colors.buttonHover};
+            color: ${CONFIG.colors.text};
         }
 
         .emote-content {
-            padding: 16px;
+            padding: 12px;
         }
 
         .emote-button {
             width: 100%;
-            padding: 12px;
-            margin: 6px 0;
-            background: ${CONFIG.colors.buttonBg}; // Updated background color
+            padding: 8px 12px;
+            margin: 3px 0;
+            background: ${CONFIG.colors.buttonBg};
             border: 1px solid ${CONFIG.colors.border};
-            border-radius: 8px; // Increased border-radius
+            border-radius: 8px;
             color: ${CONFIG.colors.text};
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
-            transition: ${CONFIG.animations.transition};
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); // Less aggressive shadow
+            box-shadow: ${CONFIG.shadows.button};
         }
 
         .emote-button:hover:not(:disabled) {
             background: ${CONFIG.colors.buttonHover};
-            border-color: #808080; /* Change border color on hover to grey */
+            border-color: ${CONFIG.colors.accent};
+            box-shadow: ${CONFIG.shadows.buttonHover};
         }
 
-        .emote-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .emote-shortcut {
+            padding: 2px 6px;
+            background: ${CONFIG.colors.shortcutBg};
+            border-radius: 4px;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            animation: rainbow 5s linear infinite;
+            position: relative;
+        }
+
+        .emote-button:hover .emote-shortcut {
+            animation: rainbow 1s linear infinite;
+        }
+
+        .emote-button:hover .emote-shortcut::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 4px;
+            animation: shortcutGlow 1s linear infinite;
+            pointer-events: none;
+        }
+
+        .emote-section-title {
+            color: ${CONFIG.colors.accent};
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 12px 0 6px;
+            opacity: 0.9;
+        }
+
+        .emote-section-title:first-child {
+            margin-top: 0;
         }
 
         .emote-status {
             display: flex;
             align-items: center;
             margin-top: 12px;
-            padding: 8px;
-            background: ${CONFIG.colors.statusBg}; /* Updated status background color */
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 8px 10px;
+            background: ${CONFIG.colors.buttonBg};
+            border-radius: 6px;
+            font-size: 11px;
+            border: 1px solid ${CONFIG.colors.border};
         }
 
         .status-indicator {
-            width: 10px;
-            height: 10px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             margin-right: 8px;
             background: ${CONFIG.colors.error};
-            transition: ${CONFIG.animations.transition};
+            transition: all 0.2s ease;
         }
 
         .status-indicator.connected {
@@ -158,28 +194,27 @@
         }
 
         .emote-footer {
-            padding: 8px 16px;
+            padding: 8px;
             border-top: 1px solid ${CONFIG.colors.border};
-            font-size: 11px;
+            font-size: 10px;
             color: ${CONFIG.colors.textMuted};
             text-align: center;
-            opacity: 0.8;
+            animation: rainbow 5s linear infinite;
         }
     `;
+
     document.head.appendChild(styleSheet);
 
-    // Create main container
     const container = document.createElement('div');
     container.className = 'emote-changer';
 
-    // Create UI structure
     container.innerHTML = `
         <div class="emote-header">
             <h3 class="emote-title">Emote Controller</h3>
-            <button class="emote-close">✕</button>
+            <button class="emote-close">×</button>
         </div>
         <div class="emote-content">
-            <h4 style="color: ${CONFIG.colors.text}; margin: 12px 0 6px;">Emotes</h4>
+            <h4 class="emote-section-title">Emotes</h4>
             <button class="emote-button" data-emote="noshoes_skating">
                 No Shoes Skating
                 <span class="emote-shortcut">⇧1</span>
@@ -193,7 +228,7 @@
                 <span class="emote-shortcut">⇧3</span>
             </button>
             <button class="emote-button" data-emote="2023_spidercrawl_lsz">
-                2023 Spider Crawl
+                Spider Crawl
                 <span class="emote-shortcut">⇧4</span>
             </button>
             <button class="emote-button" data-emote="bad_2022_teenwalk_dg">
@@ -201,7 +236,7 @@
                 <span class="emote-shortcut">⇧5</span>
             </button>
          
-            <h4 style="color: ${CONFIG.colors.text}; margin: 12px 0 6px;">Animations</h4>
+            <h4 class="emote-section-title">Animations</h4>
             <button class="emote-button" data-animation="next_level">
                 Next Level
                 <span class="emote-shortcut">⇧6</span>
@@ -217,26 +252,19 @@
 
             <div class="emote-status">
                 <div class="status-indicator"></div>
-                <span class="status-text" style="color: ${CONFIG.colors.text};">Disconnected</span> <!-- Make text white -->
+                <span class="status-text">Disconnected</span>
             </div>
         </div>
         <div class="emote-footer">
-            Pro Tip: Use keyboard shortcuts to trigger actions quickly
+            Shift + Number for quick access
         </div>
     `;
 
-    // Add to DOM and animate in
     document.body.appendChild(container);
     requestAnimationFrame(() => container.classList.add('visible'));
 
-    // Get UI elements
-    const closeButton = container.querySelector('.emote-close');
-    const header = container.querySelector('.emote-header');
-    const buttons = container.querySelectorAll('.emote-button');
-    const statusIndicator = container.querySelector('.status-indicator');
-    const statusText = container.querySelector('.status-text');
-
-    // Dragging functionality
+    let sessionIdlol = null;
+    let socket;
     let isDragging = false;
     let currentX;
     let currentY;
@@ -244,6 +272,12 @@
     let initialY;
     let xOffset = 0;
     let yOffset = 0;
+
+    const closeButton = container.querySelector('.emote-close');
+    const header = container.querySelector('.emote-header');
+    const buttons = container.querySelectorAll('.emote-button');
+    const statusIndicator = container.querySelector('.status-indicator');
+    const statusText = container.querySelector('.status-text');
 
     function dragStart(e) {
         initialX = e.clientX - xOffset;
@@ -268,47 +302,27 @@
         header.style.cursor = 'grab';
     }
 
-    // WebSocket handling
-    let socket;
-    const OriginalWebSocket = window.WebSocket;
-    window.WebSocket = function (...args) {
-        socket = new OriginalWebSocket(...args);
-
-        socket.addEventListener('open', () => {
-            console.log('WebSocket connected');
-            updateConnectionStatus(true);
-        });
-
-        socket.addEventListener('close', () => {
-            console.log('WebSocket disconnected');
-            updateConnectionStatus(false);
-        });
-
-        socket.addEventListener('message', (event) => {
-            const messageData = event.data; // Access the data property
-
-            const parsedData = parseWebSocketMessage(messageData); // Parse the message
-            console.log("AHAH: " + parsedData);
-            console.log(parsedData);
-
-            if (parsedData && parsedData.messageType === '2000') {
-                console.log("uhh: " + parsedData.messageContent.sessionId);
-                sessionIdlol = parsedData.messageContent.sessionId;
-                this.localStorage.sessionIdlol = parsedData.messageContent.sessionId;
-            }
-        });
-
-        socket.addEventListener('error', (error) => {
-            console.error('WebSocket error:', error);
-            updateConnectionStatus(false);
-        });
-
-        return socket;
-    };
-
     function updateConnectionStatus(connected) {
         statusIndicator.classList.toggle('connected', connected);
         statusText.textContent = connected ? 'Connected' : 'Disconnected';
+    }
+
+    function parseWebSocketMessage(data) {
+        try {
+            const messageStr = data.toString();
+            if (messageStr.startsWith('42[')) {
+                const jsonStr = messageStr.substring(2);
+                const [eventName, payload] = JSON.parse(jsonStr);
+                if (typeof payload === 'object') {
+                    return payload;
+                }
+                return JSON.parse(payload);
+            }
+            return null;
+        } catch (error) {
+            console.error('Error parsing WebSocket message:', error);
+            return null;
+        }
     }
 
     function triggerEmote(emoteId) {
@@ -326,14 +340,42 @@
 
             socket.send(message);
 
-            // Visual feedback
             const button = container.querySelector(`[data-emote="${emoteId}"], [data-animation="${emoteId}"]`);
             button.style.background = CONFIG.colors.accent;
             setTimeout(() => button.style.background = '', 200);
         }
     }
 
-    // Event listeners
+    const OriginalWebSocket = window.WebSocket;
+    window.WebSocket = function (...args) {
+        socket = new OriginalWebSocket(...args);
+
+        socket.addEventListener('open', () => {
+            console.log('WebSocket connected');
+            updateConnectionStatus(true);
+        });
+
+        socket.addEventListener('close', () => {
+            console.log('WebSocket disconnected');
+            updateConnectionStatus(false);
+        });
+
+        socket.addEventListener('message', (event) => {
+            const parsedData = parseWebSocketMessage(event.data);
+            if (parsedData && parsedData.messageType === '2000') {
+                sessionIdlol = parsedData.messageContent.sessionId;
+                localStorage.sessionIdlol = parsedData.messageContent.sessionId;
+            }
+        });
+
+        socket.addEventListener('error', (error) => {
+            console.error('WebSocket error:', error);
+            updateConnectionStatus(false);
+        });
+
+        return socket;
+    };
+
     closeButton.onclick = () => {
         container.classList.remove('visible');
         setTimeout(() => container.remove(), 200);
@@ -345,27 +387,24 @@
 
     buttons.forEach(button => {
         button.onclick = () => {
-            const emoteId = button.dataset.emote || button.dataset.animation; // Check for emote or animation
+            const emoteId = button.dataset.emote || button.dataset.animation;
             triggerEmote(emoteId);
         };
     });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-        if (e.shiftKey) { // Check if Shift is pressed
+        if (e.shiftKey) {
             const num = parseInt(e.key);
             if (num > 0 && num <= buttons.length) {
                 e.preventDefault();
-                const emote = buttons[num - 1].dataset.emote || buttons[num - 1].dataset.animation; // Check for emote or animation
+                const emote = buttons[num - 1].dataset.emote || buttons[num - 1].dataset.animation;
                 triggerEmote(emote);
             }
         }
     });
 
-    // Restore original WebSocket
     Object.assign(window.WebSocket, OriginalWebSocket);
 
-    // Return cleanup function
     return () => {
         container.remove();
         styleSheet.remove();
