@@ -1,275 +1,292 @@
-(async function () {
-    async function loadQuestionsFromUrl() {
-        try {
-            const response = await fetch("https://raw.githubusercontent.com/mwarcc/ss/refs/heads/main/quiz");
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            const data = await response.json();
-            return data;
-        } catch (err) {
-            console.error('Error loading questions from URL:', err);
-            return {};
-        }
-    }
+(function () {
 
-    let questionsDict = await loadQuestionsFromUrl();
-
-    const CONFIG = {
-        colors: {
-            background: 'rgba(0, 0, 0, 0.7)',
-            headerBg: 'rgba(45, 45, 45, 0.8)',
+  async function loadQuestionsFromUrl() {
+      try {
+          // Send a GET request to the provided URL
+          const response = await fetch("https://raw.githubusercontent.com/mwarcc/ss/refs/heads/main/quiz");
   
-            accent: '#00ff00',
-            border: 'rgba(76, 76, 76, 0.8)',
-            text: '#ffffff',
-            textMuted: '#aaaaaa',
-            success: '#5bff5b',
-            error: '#ff4c4c'
-        },
-        animations: {
-            transition: 'all 0.3s ease'
-        }
-    };
+          // Check if the response is OK (status code 200-299)
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+  
+          // Parse the JSON response
+          const data = await response.json();
+          return data; // Return the loaded questions
+      } catch (err) {
+          console.error('Error loading questions from URL:', err);
+          return {}; // Return an empty object in case of an error
+      }
+  }
 
-    // Inject CSS
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = `
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-        .starquiz-container {
-            font-family: 'Minecraft', sans-serif;
-            position: fixed;
-            top: 20px; /* Keep some margin from the top */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Center the element */
-            width: 300px;
-            background: ${CONFIG.colors.background};
-            border: 1px solid ${CONFIG.colors.border};
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transform: translate(-50%, -10px);
-            transition: ${CONFIG.animations.transition};
-            overflow: hidden;
-            z-index: 9999;
-            backdrop-filter: blur(5px);
-        }
-        .starquiz-container.visible {
-            opacity: 1;
-            transform: translate(-50%, 0); /* Keep centering when visible */
-        }
-        .starquiz-header {
-            background: ${CONFIG.colors.headerBg};
-            padding: 12px 16px;
-            border-bottom: 1px solid ${CONFIG.colors.border};
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 8px 8px 0 0;
-            cursor: default; /* Change cursor to indicate no dragging */
-        }
-        .starquiz-title {
-            color: ${CONFIG.colors.accent};
-            font-size: 18px;
-            margin: 0;
-            text-shadow: 1px 1px 2px black;
-        }
-        .starquiz-close {
-            background: none;
-            border: none;
-            color: ${CONFIG.colors.text};
-            cursor: pointer;
-            font-size: 20px;
-            transition: ${CONFIG.animations.transition};
-        }
-        .starquiz-close:hover {
-            color: ${CONFIG.colors.error};
-        }
-        .starquiz-content {
-            padding: 16px;
-            color: ${CONFIG.colors.text};
-        }
-        .starquiz-footer {
-            padding: 10px;
-            border-top: 1px solid ${CONFIG.colors.border};
-            color: ${CONFIG.colors.textMuted};
-            font-size: 12px;
-            text-align: center;
-        }
-        .status-indicator {
-            font-weight: bold;
-            color: ${CONFIG.colors.accent};
-        }
-        .quizStatus {
-            background: none !important; /* Ensure no background */
-            color: ${CONFIG.colors.text}; /* Ensure text color is set */
-            border: none; /* Remove any border that might create visual artifacts */
-            position: relative; /* If needed for positioning */
-            padding: 0; /* No padding */
-        }
-        
-    `;
-    document.head.appendChild(styleSheet);
+  let questionsDict = loadQuestionsFromUrl();
 
-    // Create main container
-    const container = document.createElement('div');
-    container.className = 'starquiz-container';
+  const CONFIG = {
+      colors: {
+          background: '#1e1e1e',
+          headerBg: '#252526',
+          buttonBg: '#2d2d2d',
+          buttonHover: '#3e3e3e',
+          accent: '#0078d4',
+          border: '#404040',
+          text: '#cccccc',
+          textMuted: '#888888',
+          success: '#47d147',
+          error: '#ff3333' // Red color for error state
+      },
+      animations: {
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+      }
+  };
 
-    // Set up the HTML structure
-    container.innerHTML = `
-        <div class="starquiz-header">
-            <h3 class="starquiz-title">MSP2 AutoStarQuiz</h3>
-            <button class="starquiz-close">✕</button>
-        </div>
-        <div class="starquiz-content">
-            <div id="quizStatus" class="starquiz-footer">
-                <span class="status-indicator">Status:</span> <span id="statusText">Disconnected</span>
-                <div id="botStatus" class="bot-status">Bot is idle</div>
-            </div>
-        </div>
-    `;
+  // Create and inject required styles
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+      .starquiz-container {
+          --shadow-color: rgba(0, 0, 0, 0.4);
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          width: 300px;
+          background: ${CONFIG.colors.background};
+          border: 1px solid ${CONFIG.colors.border};
+          border-radius: 8px;
+          box-shadow: 0 4px 6px var(--shadow-color);
+          z-index: 999999;
+          opacity: 0;
+          transform: translateY(-10px);
+          transition: ${CONFIG.animations.transition};
+      }
 
-    document.body.appendChild(container);
-    requestAnimationFrame(() => container.classList.add('visible'));
+      .starquiz-container.visible {
+          opacity: 1;
+          transform: translateY(0);
+      }
 
-    // Select UI elements
-    const closeButton = container.querySelector('.starquiz-close');
-    const statusText = document.querySelector('#statusText');
-    const botStatus = document.querySelector('#botStatus');
+      .starquiz-header {
+          background: ${CONFIG.colors.headerBg};
+          padding: 12px 16px;
+          border-bottom: 1px solid ${CONFIG.colors.border};
+          border-radius: 8px 8px 0 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
 
-    let socket;
+      .starquiz-title {
+          color: ${CONFIG.colors.text};
+          font-size: 16px;
+          margin: 0;
+      }
 
-    // WebSocket Setup
-    const OriginalWebSocket = window.WebSocket;
-    window.WebSocket = function (...args) {
-        socket = new OriginalWebSocket(...args);
+      .starquiz-close {
+          background: transparent;
+          border: none;
+          color: ${CONFIG.colors.text};
+          cursor: pointer;
+          padding: 4px 8px;
+          font-size: 16px;
+          transition: ${CONFIG.animations.transition};
+      }
 
-        // Handle open connection
-        socket.addEventListener('open', () => {
-            console.log('WebSocket connected');
-            updateConnectionStatus(true);
-        });
+      .starquiz-close:hover {
+          background: ${CONFIG.colors.buttonHover};
+      }
 
-        // Handle close connection
-        socket.addEventListener('close', () => {
-            console.log('WebSocket disconnected');
-            updateConnectionStatus(false);
-        });
+      .starquiz-content {
+          padding: 16px;
+      }
 
-        // Handle messages
-        socket.addEventListener('message', (event) => {
-            const messageString = event.data;
+      .starquiz-button {
+          width: 100%;
+          padding: 10px 12px;
+          margin: 6px 0;
+          background: ${CONFIG.colors.buttonBg};
+          border: 1px solid ${CONFIG.colors.border};
+          border-radius: 4px;
+          color: ${CONFIG.colors.text};
+          font-size: 14px;
+          cursor: pointer;
+          transition: ${CONFIG.animations.transition};
+      }
 
-            // Update connection status for JWT message
-            if (messageString.startsWith('40{"jwt":"')) {
-                if (socket.readyState === WebSocket.OPEN) {
-                    updateConnectionStatus(true);
-                }
-            }
-if (messageString.match(/^\d+$/)) {
-            return;
-        }
+      .starquiz-button:hover {
+          background: ${CONFIG.colors.buttonHover};
+      }
 
-        let jsonString = messageString.startsWith('42[')
-            ? messageString.substring(2)
-            : messageString;
+     .starquiz-button.disabled {
+  background: #ff3333 !important; /* Bright red background for disabled state */
+  color: #fff !important; /* White text for better contrast */
+  cursor: not-allowed;
+}
 
-        if (jsonString.startsWith('[') && jsonString.endsWith(']')) {
-            const [_, payload] = JSON.parse(jsonString);
-            const { messageType, messageContent } = payload;
+      .starquiz-footer {
+          padding: 8px 16px;
+          border-top: 1px solid ${CONFIG.colors.border};
+          font-size: 12px;
+          color: ${CONFIG.colors.textMuted};
+          text-align: center;
+      }
 
-            if (messageType === 'game:state') {
-                if (messageContent.newState === 'waiting_for_answer') {
-                   
+      .status-indicator {
+          margin-right: 8px;
+          font-weight: bold;
+      }
+  `;
+  document.head.appendChild(styleSheet);
 
-                    // Check the current question being answered
-                    if (currentQuestion && questionsDict[currentQuestion]?.correctAnswer !== null) {
-                        const correctAnswer = questionsDict[currentQuestion].correctAnswer;
-                        socket.send(`42${JSON.stringify(['quiz:answer', { "answer": correctAnswer }])}`);
-                      
-                    } else {
-                        const answer = Math.floor(Math.random() * 3) + 1;
-                        socket.send(`42${JSON.stringify(['quiz:answer', { "answer": answer }])}`);
-                       
-                    }
-                }
-            } else if (messageType === 'quiz:chal') {
-                const { question, answers } = messageContent;
-                if (question && answers) {
-                    currentQuestion = question; // Set the current question
-                    if (!questionsDict[question]) {
-                        questionsDict[question] = { answers, correctAnswer: null };
-                     
-                      
-                    } else {
-                       
-                    }
-                }
-            } else if (messageType === 'quiz:reveal') {
-                const { correctAnswer } = messageContent;
-                if (currentQuestion) {
-                    questionsDict[currentQuestion].correctAnswer = correctAnswer;
-                   
-                }
-            }
-        }
-        });
+  // Create main container
+  const container = document.createElement('div');
+  container.className = 'starquiz-container';
 
-        socket.addEventListener('error', () => {
-            updateConnectionStatus(false);
-        });
+  // Create UI structure
+  container.innerHTML = `
+      <div class="starquiz-header">
+          <h3 class="starquiz-title">StarQuiz Controller</h3>
+          <button class="starquiz-close">✕</button>
+      </div>
+      <div class="starquiz-content">
+          <button class="starquiz-button" id="stopQuiz" disabled>Stop Quiz</button>
+          <div id="quizStatus" class="starquiz-footer">
+              <span class="status-indicator">Status: </span><span id="statusText">Disconnected</span>
+          </div>
+      </div>
+  `;
 
-        return socket;
-    };
+  // Add to DOM and animate in
+  document.body.appendChild(container);
+  requestAnimationFrame(() => container.classList.add('visible'));
 
-    function updateConnectionStatus(connected) {
-        statusText.textContent = connected ? 'Connected' : 'Disconnected';
-        botStatus.textContent = connected ? 'Bot is idle' : 'Disconnected';
-    }
+  // Get UI elements
+  const closeButton = container.querySelector('.starquiz-close');
+  const stopQuizButton = container.querySelector('#stopQuiz');
+  const statusText = document.querySelector('#statusText');
 
-    closeButton.onclick = () => {
-        container.classList.remove('visible');
-        setTimeout(() => container.remove(), 200);
-    };
+  let socket;
 
-    // Remove dragging functionality
-    /*
-    // Dragging functionality
-    let isDragging = false;
-    let offsetX, offsetY;
+  // WebSocket handling
+  const OriginalWebSocket = window.WebSocket;
+  window.WebSocket = function (...args) {
+      socket = new OriginalWebSocket(...args);
+      
+      socket.addEventListener('open', () => {
+          console.log('WebSocket connected');
+          updateConnectionStatus(true);
+      });
 
-    const header = container.querySelector('.starquiz-header');
+      socket.addEventListener('close', () => {
+          console.log('WebSocket disconnected');
+          updateConnectionStatus(false);
+      });
 
-    header.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        offsetX = e.clientX - container.getBoundingClientRect().left;
-        offsetY = e.clientY - container.getBoundingClientRect().top;
-        document.body.style.cursor = 'move'; // Change cursor to indicate dragging
-    });
+      socket.addEventListener('message', (event) => {
+          const messageData = event.data;
 
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            container.style.left = `${e.clientX - offsetX}px`;
-            container.style.top = `${e.clientY - offsetY}px`;
-        }
-    });
+          if (messageData.startsWith('42["1000"]')) {
+              console.log('Received connection message');
+              updateConnectionStatus(true);
+          }
 
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.cursor = ''; // Reset cursor when not dragging
-    });
-    */
+          const messageString = event.data;
 
-    // Restore the original WebSocket
-    Object.assign(window.WebSocket, OriginalWebSocket);
+          if (messageString.match(/^\d+$/)) {
+              return;
+          }
+  
+          let jsonString = messageString.startsWith('42[')
+              ? messageString.substring(2)
+              : messageString;
 
-    // Cleanup function when done
-    return () => {
-        container.remove();
-        styleSheet.remove();
-        window.WebSocket = OriginalWebSocket;
-    };
+              if (jsonString.startsWith('[') && jsonString.endsWith(']')) {
+                  const [_, payload] = JSON.parse(jsonString);
+                  const { messageType, messageContent } = payload;
+      
+                  if (messageType === 'game:state') {
+                      if (messageContent.newState === 'waiting_for_answer') {
+                          console.log('Waiting for answer...');
+
+                          const lastQuestion = Object.keys(questionsDict).find(q => questionsDict[q].correctAnswer !== null);
+                          if (lastQuestion) {
+                              const correctAnswer = questionsDict[lastQuestion].correctAnswer;
+                              socket.send(`42${JSON.stringify(['quiz:answer', { "answer": correctAnswer }])}`);
+                              console.log(`Sent correct answer: ${correctAnswer}`);
+                          } else {
+                              const answer = Math.floor(Math.random() * 3) + 1;
+                              socket.send(`42${JSON.stringify(['quiz:answer', { "answer": answer }])}`);
+                              console.log(`Sent random answer: ${answer}`);
+                          }
+                      }
+                  }else if (messageType === 'quiz:chal') {
+                      const { question, answers } = messageContent;
+                      if (question && answers) {
+                          if (!questionsDict[question]) {  // Only add if the question doesn't already exist
+                              questionsDict[question] = { answers, correctAnswer: null };
+                              console.log('\nQuestion added: ' + question);
+      
+          
+                          } else {
+                              console.log('\nQuestion already exists: ' + question);
+                          }
+                      }
+                  } else if (messageType === 'quiz:reveal') {
+                      const { correctAnswer } = messageContent;
+                      const question = Object.keys(questionsDict).find(q => questionsDict[q].correctAnswer === null);
+                      if (question) {
+                          questionsDict[question].correctAnswer = correctAnswer;
+                          console.log('Updated question' + question + ' with correct answer: ' + correctAnswer);
+      
+                    
+      
+                      }
+                  }
+              }
+
+      });
+
+      socket.addEventListener('error', (error) => {
+          console.error('WebSocket error:', error);
+          updateConnectionStatus(false);
+      });
+
+      return socket;
+  };
+
+  function updateConnectionStatus(connected) {
+      statusText.textContent = connected ? 'Connected' : 'Disconnected';
+      stopQuizButton.disabled = !connected;  // Disable button if disconnected
+  
+      if (!connected) {
+          stopQuizButton.classList.add('disabled'); // Add disabled class
+          stopQuizButton.style.background = CONFIG.colors.error; // Set background to red
+          stopQuizButton.style.color = '#fff'; // Set text color to white for contrast
+      } else {
+          stopQuizButton.classList.remove('disabled'); // Remove disabled class
+          stopQuizButton.style.background = ''; // Reset background color
+          stopQuizButton.style.color = ''; // Reset text color
+      }
+  }
+
+  function stopQuiz() {
+      // Stop quiz logic can go here
+      console.log("Stop Quiz button clicked");
+  }
+
+  // Event listeners
+  closeButton.onclick = () => {
+      container.classList.remove('visible');
+      setTimeout(() => container.remove(), 200);
+  };
+
+  stopQuizButton.onclick = stopQuiz;
+
+  // Restore original WebSocket
+  Object.assign(window.WebSocket, OriginalWebSocket);
+
+  // Return cleanup function
+  return () => {
+      container.remove();
+      styleSheet.remove();
+      window.WebSocket = OriginalWebSocket;
+  };
 })();
