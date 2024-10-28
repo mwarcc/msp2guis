@@ -27,20 +27,20 @@
 
     const CONFIG = {
         colors: {
-            background: '#1e1e1e',
-            headerBg: '#252526',
-            buttonBg: '#2d2d2d',
-            buttonHover: '#3e3e3e',
-            accent: '#0078d4',
-            accentHover: '#1084d8',
-            border: '#404040',
-            text: '#cccccc',
-            textMuted: '#888888',
-            success: '#47d147',
-            error: '#ff3333'
+            background: '#2b2e37', // Dark background
+            headerBg: '#292c35', // Updated header background color
+            buttonBg: '#34393f', // Corrected button background color
+            buttonHover: '#555555', // Button hover effect
+            accent: '#5b9bd5', // Accent color for highlights
+            border: '#404040', // Border color
+            text: '#ffffff', // White text
+            textMuted: '#cccccc', // Muted text color
+            success: '#4caf50', // Success indicator color
+            error: '#f44336', // Error indicator color
+            statusBg: '#41434c' // Status background color
         },
         animations: {
-            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            transition: 'all 0.2s ease-in-out'
         }
     };
 
@@ -49,15 +49,15 @@
     styleSheet.textContent = `
         .emote-changer {
             --shadow-color: rgba(0, 0, 0, 0.4);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             position: fixed;
             top: 20px;
             left: 20px;
-            width: 300px;
+            width: 320px;
             background: ${CONFIG.colors.background};
             border: 1px solid ${CONFIG.colors.border};
-            border-radius: 8px;
-            box-shadow: 0 4px 6px var(--shadow-color);
+            border-radius: 12px; /* Increased border-radius */
+            box-shadow: 0 4px 8px var(--shadow-color);
             z-index: 999999;
             opacity: 0;
             transform: translateY(-10px);
@@ -70,10 +70,10 @@
         }
 
         .emote-header {
-            background: ${CONFIG.colors.headerBg};
+            background: ${CONFIG.colors.headerBg}; // Updated header background color
             padding: 12px 16px;
             border-bottom: 1px solid ${CONFIG.colors.border};
-            border-radius: 8px 8px 0 0;
+            border-radius: 12px 12px 0 0; /* Increased border-radius */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -83,7 +83,7 @@
 
         .emote-title {
             color: ${CONFIG.colors.text};
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             margin: 0;
         }
@@ -95,7 +95,7 @@
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 16px;
             transition: ${CONFIG.animations.transition};
         }
 
@@ -109,23 +109,24 @@
 
         .emote-button {
             width: 100%;
-            padding: 10px 12px;
+            padding: 12px;
             margin: 6px 0;
-            background: ${CONFIG.colors.buttonBg};
+            background: ${CONFIG.colors.buttonBg}; // Updated background color
             border: 1px solid ${CONFIG.colors.border};
-            border-radius: 4px;
+            border-radius: 8px; // Increased border-radius
             color: ${CONFIG.colors.text};
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
             transition: ${CONFIG.animations.transition};
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); // Less aggressive shadow
         }
 
         .emote-button:hover:not(:disabled) {
             background: ${CONFIG.colors.buttonHover};
-            border-color: ${CONFIG.colors.accent};
+            border-color: #808080; /* Change border color on hover to grey */
         }
 
         .emote-button:disabled {
@@ -138,14 +139,14 @@
             align-items: center;
             margin-top: 12px;
             padding: 8px;
-            background: ${CONFIG.colors.headerBg};
+            background: ${CONFIG.colors.statusBg}; /* Updated status background color */
             border-radius: 4px;
             font-size: 12px;
         }
 
         .status-indicator {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             margin-right: 8px;
             background: ${CONFIG.colors.error};
@@ -162,6 +163,7 @@
             font-size: 11px;
             color: ${CONFIG.colors.textMuted};
             text-align: center;
+            opacity: 0.8;
         }
     `;
     document.head.appendChild(styleSheet);
@@ -177,46 +179,45 @@
             <button class="emote-close">✕</button>
         </div>
         <div class="emote-content">
-            <h4 style="color: white;">Emotes</h4>
+            <h4 style="color: ${CONFIG.colors.text}; margin: 12px 0 6px;">Emotes</h4>
             <button class="emote-button" data-emote="noshoes_skating">
                 No Shoes Skating
-                <span class="emote-shortcut">⌘1</span>
+                <span class="emote-shortcut">⇧1</span>
             </button>
             <button class="emote-button" data-emote="bunny_hold">
                 Bunny Hold
-                <span class="emote-shortcut">⌘2</span>
+                <span class="emote-shortcut">⇧2</span>
             </button>
-            <button class="emote-button" data-emote="swin_new">
+            <button class="emote-button" data-emote="swim_new">
                 Swim New
-                <span class="emote-shortcut">⌘3</span>
+                <span class="emote-shortcut">⇧3</span>
             </button>
             <button class="emote-button" data-emote="2023_spidercrawl_lsz">
                 2023 Spider Crawl
-                <span class="emote-shortcut">⌘4</span>
+                <span class="emote-shortcut">⇧4</span>
             </button>
             <button class="emote-button" data-emote="bad_2022_teenwalk_dg">
                 Chewing-gum
-                <span class="emote-shortcut">⌘5</span>
+                <span class="emote-shortcut">⇧5</span>
             </button>
          
-
-            <h4 style="color: white;">Animation Controller</h4>
+            <h4 style="color: ${CONFIG.colors.text}; margin: 12px 0 6px;">Animation Controller</h4>
             <button class="emote-button" data-animation="next_level">
                 Next Level
-                <span class="emote-shortcut">⌘6</span>
+                <span class="emote-shortcut">⇧6</span>
             </button>
             <button class="emote-button" data-animation="gift_open">
                 Gift Open
-                <span class="emote-shortcut">⌘7</span>
+                <span class="emote-shortcut">⇧7</span>
             </button>
             <button class="emote-button" data-animation="vip">
                 VIP
-                <span class="emote-shortcut">⌘8</span>
+                <span class="emote-shortcut">⇧8</span>
             </button>
 
             <div class="emote-status">
                 <div class="status-indicator"></div>
-                <span class="status-text">Disconnected</span>
+                <span class="status-text" style="color: ${CONFIG.colors.text};">Disconnected</span> <!-- Make text white -->
             </div>
         </div>
         <div class="emote-footer">
@@ -247,11 +248,8 @@
     function dragStart(e) {
         initialX = e.clientX - xOffset;
         initialY = e.clientY - yOffset;
-
-        if (e.target.closest('.emote-header')) {
-            isDragging = true;
-            header.style.cursor = 'grabbing';
-        }
+        isDragging = true;
+        header.style.cursor = 'grabbing';
     }
 
     function drag(e) {
@@ -261,14 +259,11 @@
             currentY = e.clientY - initialY;
             xOffset = currentX;
             yOffset = currentY;
-
-            container.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            container.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
         }
     }
 
     function dragEnd() {
-        initialX = currentX;
-        initialY = currentY;
         isDragging = false;
         header.style.cursor = 'grab';
     }
@@ -314,7 +309,6 @@
     function updateConnectionStatus(connected) {
         statusIndicator.classList.toggle('connected', connected);
         statusText.textContent = connected ? 'Connected' : 'Disconnected';
-        buttons.forEach(btn => btn.disabled = !connected);
     }
 
     function triggerEmote(emoteId) {
@@ -329,7 +323,6 @@
             } else {
                 message = `42["7005",{"mood":"${emoteId}"}]`;
             }
-            
 
             socket.send(message);
 
@@ -359,7 +352,7 @@
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-        if (e.metaKey || e.ctrlKey) {
+        if (e.shiftKey) { // Check if Shift is pressed
             const num = parseInt(e.key);
             if (num > 0 && num <= buttons.length) {
                 e.preventDefault();
@@ -379,6 +372,3 @@
         window.WebSocket = OriginalWebSocket;
     };
 })();
-
-
-
