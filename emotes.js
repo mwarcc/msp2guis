@@ -201,7 +201,7 @@
                 <span class="emote-shortcut">⇧5</span>
             </button>
          
-            <h4 style="color: ${CONFIG.colors.text}; margin: 12px 0 6px;">Animation Controller</h4>
+            <h4 style="color: ${CONFIG.colors.text}; margin: 12px 0 6px;">Animations</h4>
             <button class="emote-button" data-animation="next_level">
                 Next Level
                 <span class="emote-shortcut">⇧6</span>
