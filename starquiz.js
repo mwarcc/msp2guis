@@ -9,11 +9,11 @@
             return {};
         }
     }
-
+////
     let questionsDict = await loadQuestionsFromUrl();
     let currentQuestion = null;
     let currentAction = 'Initializing...';
-    let isConnected = false;
+    let isConnected = false; 
 
     const CONFIG = {
         colors: {
