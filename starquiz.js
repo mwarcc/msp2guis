@@ -1,292 +1,418 @@
-(function () {
+(async function () {
+    async function loadQuestionsFromUrl() {
+        try {
+            const response = await fetch("https://raw.githubusercontent.com/mwarcc/ss/refs/heads/main/quiz");
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return await response.json();
+        } catch (err) {
+            console.error('Error loading questions from URL:', err);
+            return {};
+        }
+    }
 
-  async function loadQuestionsFromUrl() {
-      try {
-          // Send a GET request to the provided URL
-          const response = await fetch("https://raw.githubusercontent.com/mwarcc/ss/refs/heads/main/quiz");
-  
-          // Check if the response is OK (status code 200-299)
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-  
-          // Parse the JSON response
-          const data = await response.json();
-          return data; // Return the loaded questions
-      } catch (err) {
-          console.error('Error loading questions from URL:', err);
-          return {}; // Return an empty object in case of an error
-      }
-  }
+    let questionsDict = await loadQuestionsFromUrl();
+    let currentQuestion = null;
+    let currentAction = 'Initializing...';
+    let isConnected = false;
 
-  let questionsDict = loadQuestionsFromUrl();
+    const CONFIG = {
+        colors: {
+            primary: '#6366f1',
+            primaryLight: '#818cf8',
+            primaryDark: '#4f46e5',
+            background: 'rgba(15, 23, 42, 0.98)',
+            surface: '#1e293b',
+            surfaceHover: '#334155',
+            border: 'rgba(99, 102, 241, 0.15)',
+            shadow: 'rgba(0, 0, 0, 0.3)',
+            text: '#f8fafc',
+            textMuted: '#94a3b8',
+            success: '#22c55e',
+            error: '#ef4444',
+            warning: '#eab308'
+        },
+        animations: {
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+            slideIn: 'slideIn 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+            pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            fadeIn: 'fadeIn 0.3s ease-out'
+        }
+    };
 
-  const CONFIG = {
-      colors: {
-          background: '#1e1e1e',
-          headerBg: '#252526',
-          buttonBg: '#2d2d2d',
-          buttonHover: '#3e3e3e',
-          accent: '#0078d4',
-          border: '#404040',
-          text: '#cccccc',
-          textMuted: '#888888',
-          success: '#47d147',
-          error: '#ff3333' // Red color for error state
-      },
-      animations: {
-          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
-      }
-  };
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @keyframes slideIn {
+            from { opacity: 0; transform: translate(-50%, -10px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
 
-  // Create and inject required styles
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = `
-      .starquiz-container {
-          --shadow-color: rgba(0, 0, 0, 0.4);
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-          position: fixed;
-          top: 20px;
-          left: 20px;
-          width: 300px;
-          background: ${CONFIG.colors.background};
-          border: 1px solid ${CONFIG.colors.border};
-          border-radius: 8px;
-          box-shadow: 0 4px 6px var(--shadow-color);
-          z-index: 999999;
-          opacity: 0;
-          transform: translateY(-10px);
-          transition: ${CONFIG.animations.transition};
-      }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
 
-      .starquiz-container.visible {
-          opacity: 1;
-          transform: translateY(0);
-      }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-      .starquiz-header {
-          background: ${CONFIG.colors.headerBg};
-          padding: 12px 16px;
-          border-bottom: 1px solid ${CONFIG.colors.border};
-          border-radius: 8px 8px 0 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-      }
+        .quiz-container {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%; /* Make responsive */
+            max-width: 400px; /* Max width for the quiz */
+            background: ${CONFIG.colors.background};
+            border-radius: 16px;
+            box-shadow: 0 8px 24px ${CONFIG.colors.shadow},
+                        0 0 0 1px ${CONFIG.colors.border};
+            opacity: 0;
+            z-index: 9999;
+            backdrop-filter: blur(12px);
+            animation: ${CONFIG.animations.slideIn};
+            animation-fill-mode: forwards;
+            transition: width 0.3s ease; /* Smooth width transition */
+        }
 
-      .starquiz-title {
-          color: ${CONFIG.colors.text};
-          font-size: 16px;
-          margin: 0;
-      }
+        @media (max-width: 480px) {
+            .quiz-container {
+                width: 90%; /* Full width on small screens */
+            }
+        }
 
-      .starquiz-close {
-          background: transparent;
-          border: none;
-          color: ${CONFIG.colors.text};
-          cursor: pointer;
-          padding: 4px 8px;
-          font-size: 16px;
-          transition: ${CONFIG.animations.transition};
-      }
+        .quiz-header {
+            background: ${CONFIG.colors.surface};
+            padding: 12px 16px;
+            border-bottom: 1px solid ${CONFIG.colors.border};
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+            cursor: move; /* Indicate draggable */
+        }
 
-      .starquiz-close:hover {
-          background: ${CONFIG.colors.buttonHover};
-      }
+        .quiz-title {
+            color: ${CONFIG.colors.text};
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-      .starquiz-content {
-          padding: 16px;
-      }
+        .quiz-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: ${CONFIG.colors.primary};
+            border-radius: 50%;
+            box-shadow: 0 0 8px ${CONFIG.colors.primary};
+            animation: ${CONFIG.animations.pulse};
+        }
 
-      .starquiz-button {
-          width: 100%;
-          padding: 10px 12px;
-          margin: 6px 0;
-          background: ${CONFIG.colors.buttonBg};
-          border: 1px solid ${CONFIG.colors.border};
-          border-radius: 4px;
-          color: ${CONFIG.colors.text};
-          font-size: 14px;
-          cursor: pointer;
-          transition: ${CONFIG.animations.transition};
-      }
+        .quiz-close {
+            background: transparent;
+            border: none;
+            color: ${CONFIG.colors.textMuted};
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-size: 18px;
+            transition: ${CONFIG.animations.transition};
+        }
 
-      .starquiz-button:hover {
-          background: ${CONFIG.colors.buttonHover};
-      }
+        .quiz-close:hover {
+            background: ${CONFIG.colors.surfaceHover};
+            color: ${CONFIG.colors.text};
+        }
 
-     .starquiz-button.disabled {
-  background: #ff3333 !important; /* Bright red background for disabled state */
-  color: #fff !important; /* White text for better contrast */
-  cursor: not-allowed;
-}
+        .quiz-content {
+            padding: 12px;
+        }
 
-      .starquiz-footer {
-          padding: 8px 16px;
-          border-top: 1px solid ${CONFIG.colors.border};
-          font-size: 12px;
-          color: ${CONFIG.colors.textMuted};
-          text-align: center;
-      }
+        .quiz-section {
+            background: ${CONFIG.colors.surface};
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid ${CONFIG.colors.border};
+            animation: ${CONFIG.animations.fadeIn};
+        }
 
-      .status-indicator {
-          margin-right: 8px;
-          font-weight: bold;
-      }
-  `;
-  document.head.appendChild(styleSheet);
+        .quiz-section:last-child {
+            margin-bottom: 0;
+        }
 
-  // Create main container
-  const container = document.createElement('div');
-  container.className = 'starquiz-container';
+        .section-title {
+            color: ${CONFIG.colors.textMuted};
+            font-size: 11px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-  // Create UI structure
-  container.innerHTML = `
-      <div class="starquiz-header">
-          <h3 class="starquiz-title">StarQuiz Controller</h3>
-          <button class="starquiz-close">✕</button>
-      </div>
-      <div class="starquiz-content">
-          <button class="starquiz-button" id="stopQuiz" disabled>Stop Quiz</button>
-          <div id="quizStatus" class="starquiz-footer">
-              <span class="status-indicator">Status: </span><span id="statusText">Disconnected</span>
-          </div>
-      </div>
-  `;
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            transition: ${CONFIG.animations.transition};
+        }
 
-  // Add to DOM and animate in
-  document.body.appendChild(container);
-  requestAnimationFrame(() => container.classList.add('visible'));
+        .status-row:last-child {
+            margin-bottom: 0;
+        }
 
-  // Get UI elements
-  const closeButton = container.querySelector('.starquiz-close');
-  const stopQuizButton = container.querySelector('#stopQuiz');
-  const statusText = document.querySelector('#statusText');
+        .status-label {
+            color: ${CONFIG.colors.textMuted};
+            font-size: 12px;
+            font-weight: 500;
+        }
 
-  let socket;
+        .status-value {
+            color: ${CONFIG.colors.text};
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-  // WebSocket handling
-  const OriginalWebSocket = window.WebSocket;
-  window.WebSocket = function (...args) {
-      socket = new OriginalWebSocket(...args);
-      
-      socket.addEventListener('open', () => {
-          console.log('WebSocket connected');
-          updateConnectionStatus(true);
-      });
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 8px currentColor;
+        }
 
-      socket.addEventListener('close', () => {
-          console.log('WebSocket disconnected');
-          updateConnectionStatus(false);
-      });
+        .status-connected { color: ${CONFIG.colors.success}; }
+        .status-disconnected { color: ${CONFIG.colors.error}; }
+        .status-idle { color: ${CONFIG.colors.warning}; }
 
-      socket.addEventListener('message', (event) => {
-          const messageData = event.data;
+        .question-card {
+            background: ${CONFIG.colors.surfaceHover};
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 8px;
+        }
 
-          if (messageData.startsWith('42["1000"]')) {
-              console.log('Received connection message');
-              updateConnectionStatus(true);
-          }
+        .question-text {
+            color: ${CONFIG.colors.text};
+            font-size: 12px;
+            margin-bottom: 8px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
 
-          const messageString = event.data;
+        .correct-answer {
+            color: ${CONFIG.colors.success};
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 8px;
+            background: ${CONFIG.colors.success}10;
+            border-radius: 6px;
+            border: 1px solid ${CONFIG.colors.success}20;
+        }
 
-          if (messageString.match(/^\d+$/)) {
-              return;
-          }
-  
-          let jsonString = messageString.startsWith('42[')
-              ? messageString.substring(2)
-              : messageString;
+        .current-action {
+            color: ${CONFIG.colors.primary};
+            font-weight: 500;
+            font-size: 12px;
+            padding: 3px 6px;
+            background: ${CONFIG.colors.primary}10;
+            border-radius: 4px;
+            border: 1px solid ${CONFIG.colors.primary}20;
+        }
+    `;
+    
+    document.head.appendChild(styleSheet);
 
-              if (jsonString.startsWith('[') && jsonString.endsWith(']')) {
-                  const [_, payload] = JSON.parse(jsonString);
-                  const { messageType, messageContent } = payload;
-      
-                  if (messageType === 'game:state') {
-                      if (messageContent.newState === 'waiting_for_answer') {
-                          console.log('Waiting for answer...');
+    const container = document.createElement('div');
+    container.className = 'quiz-container';
 
-                          const lastQuestion = Object.keys(questionsDict).find(q => questionsDict[q].correctAnswer !== null);
-                          if (lastQuestion) {
-                              const correctAnswer = questionsDict[lastQuestion].correctAnswer;
-                              socket.send(`42${JSON.stringify(['quiz:answer', { "answer": correctAnswer }])}`);
-                              console.log(`Sent correct answer: ${correctAnswer}`);
-                          } else {
-                              const answer = Math.floor(Math.random() * 3) + 1;
-                              socket.send(`42${JSON.stringify(['quiz:answer', { "answer": answer }])}`);
-                              console.log(`Sent random answer: ${answer}`);
-                          }
-                      }
-                  }else if (messageType === 'quiz:chal') {
-                      const { question, answers } = messageContent;
-                      if (question && answers) {
-                          if (!questionsDict[question]) {  // Only add if the question doesn't already exist
-                              questionsDict[question] = { answers, correctAnswer: null };
-                              console.log('\nQuestion added: ' + question);
-      
-          
-                          } else {
-                              console.log('\nQuestion already exists: ' + question);
-                          }
-                      }
-                  } else if (messageType === 'quiz:reveal') {
-                      const { correctAnswer } = messageContent;
-                      const question = Object.keys(questionsDict).find(q => questionsDict[q].correctAnswer === null);
-                      if (question) {
-                          questionsDict[question].correctAnswer = correctAnswer;
-                          console.log('Updated question' + question + ' with correct answer: ' + correctAnswer);
-      
-                    
-      
-                      }
-                  }
-              }
+    function updateUI() {
+        requestAnimationFrame(() => {
+            container.innerHTML = `
+                <div class="quiz-header">
+                    <h3 class="quiz-title">AutoStarQuiz</h3>
+                    <button class="quiz-close">×</button>
+                </div>
+                <div class="quiz-content">
+                    <div class="quiz-section">
+                        <div class="section-title">Status</div>
+                        <div class="status-row">
+                            <span class="status-label">Connection</span>
+                            <span class="status-value ${isConnected ? 'status-connected' : 'status-disconnected'}">
+                                <span class="status-indicator"></span>
+                                <span id="statusText">${isConnected ? 'Connected' : 'Disconnected'}</span>
+                            </span>
+                        </div>
+                        <div class="status-row">
+                            <span class="status-label">Action</span>
+                            <span class="current-action">${currentAction}</span>
+                        </div>
+                    </div>
+                    ${currentQuestion ? 
+                        `<div class="quiz-section">
+                            <div class="section-title">Question</div>
+                            <div class="question-card">
+                                <div class="question-text">${currentQuestion}</div>
+                                ${questionsDict[currentQuestion]?.correctAnswer ? 
+                                    `<div class="correct-answer">Answer: ${questionsDict[currentQuestion].correctAnswer}</div>` : 
+                                    ''}
+                            </div>
+                        </div>` 
+                     : ''}
+                </div>
+            `;
+        });
+    }
 
-      });
+    document.body.appendChild(container);
+    updateUI();
 
-      socket.addEventListener('error', (error) => {
-          console.error('WebSocket error:', error);
-          updateConnectionStatus(false);
-      });
+    const OriginalWebSocket = window.WebSocket;
+    window.WebSocket = function (...args) {
+        const socket = new OriginalWebSocket(...args);
 
-      return socket;
-  };
+        function setConnected(connected) {
+            isConnected = connected;
+            currentAction = connected ? 'Connected, waiting for quiz' : 'Disconnected';
+            updateUI();
+        }
 
-  function updateConnectionStatus(connected) {
-      statusText.textContent = connected ? 'Connected' : 'Disconnected';
-      stopQuizButton.disabled = !connected;  // Disable button if disconnected
-  
-      if (!connected) {
-          stopQuizButton.classList.add('disabled'); // Add disabled class
-          stopQuizButton.style.background = CONFIG.colors.error; // Set background to red
-          stopQuizButton.style.color = '#fff'; // Set text color to white for contrast
-      } else {
-          stopQuizButton.classList.remove('disabled'); // Remove disabled class
-          stopQuizButton.style.background = ''; // Reset background color
-          stopQuizButton.style.color = ''; // Reset text color
-      }
-  }
+        socket.addEventListener('open', () => {
+            console.log('WebSocket connected');
+            setConnected(true);
+        });
 
-  function stopQuiz() {
-      // Stop quiz logic can go here
-      console.log("Stop Quiz button clicked");
-  }
+        socket.addEventListener('close', () => {
+            console.log('WebSocket disconnected');
+            setConnected(false);
+        });
 
-  // Event listeners
-  closeButton.onclick = () => {
-      container.classList.remove('visible');
-      setTimeout(() => container.remove(), 200);
-  };
+        socket.addEventListener('message', (event) => {
+            const messageString = event.data;
 
-  stopQuizButton.onclick = stopQuiz;
+            if (messageString.startsWith('40{"jwt":"')) {
+                setConnected(true);
+                return;
+            }
 
-  // Restore original WebSocket
-  Object.assign(window.WebSocket, OriginalWebSocket);
+            if (messageString.match(/^\d+$/)) return;
 
-  // Return cleanup function
-  return () => {
-      container.remove();
-      styleSheet.remove();
-      window.WebSocket = OriginalWebSocket;
-  };
+            let jsonString = messageString.startsWith('42[') ? messageString.substring(2) : messageString;
+
+            if (jsonString.startsWith('[') && jsonString.endsWith(']')) {
+                try {
+                    const [_, payload] = JSON.parse(jsonString);
+                    const { messageType, messageContent } = payload;
+
+                    switch (messageType) {
+                        case 'game:state':
+                            if (messageContent.newState === 'waiting_for_answer') {
+                                currentAction = 'Waiting for answer...';
+                                updateUI();
+                                
+                                if (currentQuestion && questionsDict[currentQuestion]?.correctAnswer !== null) {
+                                    const correctAnswer = questionsDict[currentQuestion].correctAnswer;
+                                    socket.send(42 + JSON.stringify(['quiz:answer', { "answer": correctAnswer }]));
+                                    currentAction = 'Answering with known answer';
+                                } else {
+                                    const answer = Math.floor(Math.random() * 3) + 1;
+                                    socket.send(42 + JSON.stringify(['quiz:answer', { "answer": answer }]));
+                                    currentAction = 'Random guess';
+                                }
+                                updateUI();
+                            }
+                            break;
+
+                        case 'quiz:chal':
+                            const { question, answers } = messageContent;
+                            if (question && answers) {
+                                currentQuestion = question;
+                                if (!questionsDict[question]) {
+                                    questionsDict[question] = { answers, correctAnswer: null };
+                                }
+                                currentAction = 'New question received';
+                                updateUI();
+                            }
+                            break;
+
+                        case 'quiz:reveal':
+                            const { correctAnswer } = messageContent;
+                            if (currentQuestion) {
+                                questionsDict[currentQuestion].correctAnswer = correctAnswer;
+                                currentAction = 'Answer revealed';
+                                updateUI();
+                            }
+                            break;
+                    }
+                } catch (error) {
+                    console.error('Error processing message:', error);
+                }
+            }
+        });
+
+        socket.addEventListener('error', () => {
+            console.error('WebSocket error');
+            setConnected(false);
+            currentAction = 'Connection error';
+            updateUI();
+        });
+
+        return socket;
+    };
+
+    // Implement drag-and-drop functionality
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - container.getBoundingClientRect().left;
+        offsetY = e.clientY - container.getBoundingClientRect().top;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            container.style.left = `${e.clientX - offsetX}px`;
+            container.style.top = `${e.clientY - offsetY}px`;
+            container.style.transform = 'none'; // Prevents jumping
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    container.addEventListener('click', (e) => {
+        if (e.target.classList.contains('quiz-close')) {
+            container.style.animation = 'none';
+            container.style.opacity = '0';
+            container.style.transform = 'translate(-50%, -10px)';
+            setTimeout(() => container.remove(), 200);
+        }
+    });
+
+    Object.assign(window.WebSocket, OriginalWebSocket);
+
+    return () => {
+        container.remove();
+        styleSheet.remove();
+        window.WebSocket = OriginalWebSocket;
+    };
 })();
+
