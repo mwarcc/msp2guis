@@ -1,4 +1,3 @@
-
 (function() {
     const OriginalWebSocket = window.WebSocket;
     const OriginalXMLHttpRequest = window.XMLHttpRequest;
@@ -12,51 +11,48 @@
     userListContainer.style.right = '20px';
     userListContainer.style.width = '350px';
     userListContainer.style.padding = '15px';
-    userListContainer.style.backgroundColor = 'rgba(23, 25, 35, 0.95)';
+    userListContainer.style.backgroundColor = 'rgba(32, 35, 45, 0.9)';
     userListContainer.style.borderRadius = '12px';
-    userListContainer.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.3)';
-    userListContainer.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+    userListContainer.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.5)';
+    userListContainer.style.fontFamily = 'Arial, sans-serif';
     userListContainer.style.zIndex = '10000';
     userListContainer.style.color = '#FFFFFF';
     userListContainer.style.transition = 'all 0.3s ease';
     userListContainer.style.backdropFilter = 'blur(10px)';
-    userListContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-    userListContainer.style.boxSizing = 'border-box';
-    userListContainer.style.overflowY = 'auto'; // Ensure overflow is set
+    userListContainer.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+    userListContainer.style.overflowY = 'auto';
 
-    // Create scrollbar styles
+    // Scrollbar styles
     const style = document.createElement('style');
     style.innerHTML = `
-        /* Scrollbar Styles for WebKit Browsers (Chrome, Safari) */
         ::-webkit-scrollbar {
-            width: 8px; /* Width of the scrollbar */
+            width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1); /* Background of the track */
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #555; /* Color of the scroll thumb */
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
+            transition: background 0.3s;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #777; /* Darker color when hovering */
+            background: rgba(255, 255, 255, 0.5);
         }
-        
-        /* Scrollbar Styles for Firefox */
         * {
             scrollbar-width: thin;
-            scrollbar-color: #555 rgba(255, 255, 255, 0.1); /* Thumb and Track colors */
+            scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.05);
         }
     `;
     document.head.appendChild(style);
 
-    // Header container
+    // Header container with separator
     const headerContainer = document.createElement('div');
     headerContainer.style.display = 'flex';
     headerContainer.style.justifyContent = 'space-between';
     headerContainer.style.alignItems = 'center';
-    headerContainer.style.marginBottom = '15px';
+    headerContainer.style.marginBottom = '8px';
     headerContainer.style.cursor = 'move';
 
     const title = document.createElement('h3');
@@ -92,6 +88,14 @@
     headerContainer.appendChild(minimizeButton);
     userListContainer.appendChild(headerContainer);
 
+    // Separator line below the title
+    const separator = document.createElement('hr');
+    separator.style.border = 'none';
+    separator.style.height = '1px';
+    separator.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+    separator.style.marginBottom = '10px';
+    userListContainer.appendChild(separator);
+
     // Create user list
     const userList = document.createElement('ul');
     userList.style.listStyleType = 'none';
@@ -112,14 +116,9 @@
         userListContainer.style.width = isMinimized ? '200px' : '320px';
     };
 
-    // Make container draggable
+    // Draggable header functionality
     let isDragging = false;
-    let currentX;
-    let currentY;
-    let initialX;
-    let initialY;
-    let xOffset = 0;
-    let yOffset = 0;
+    let currentX, currentY, initialX, initialY, xOffset = 0, yOffset = 0;
 
     headerContainer.addEventListener('mousedown', dragStart);
     document.addEventListener('mousemove', drag);
@@ -141,7 +140,7 @@
             currentY = e.clientY - initialY;
             xOffset = currentX;
             yOffset = currentY;
-            
+
             userListContainer.style.transform = `translate(${currentX}px, ${currentY}px)`;
         }
     }
@@ -164,10 +163,10 @@
         sortedUsers.forEach(user => {
             const listItem = document.createElement('li');
             listItem.style.padding = '10px 12px';
-            listItem.style.marginBottom = '4px';
-            listItem.style.borderRadius = '6px';
+            listItem.style.marginBottom = '6px';
+            listItem.style.borderRadius = '8px';
             listItem.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-            listItem.style.transition = 'all 0.2s';
+            listItem.style.transition = 'background 0.2s, transform 0.2s';
             listItem.style.display = 'flex';
             listItem.style.alignItems = 'center';
             listItem.style.gap = '8px';
@@ -179,48 +178,51 @@
             statusDot.style.borderRadius = '50%';
             statusDot.style.backgroundColor = '#4CAF50';
             statusDot.style.flexShrink = '0';
-            
+
+            // Create name span
             const nameSpan = document.createElement('span');
             nameSpan.textContent = user.profileData.name;
             nameSpan.style.overflow = 'hidden';
             nameSpan.style.textOverflow = 'ellipsis';
             nameSpan.style.whiteSpace = 'nowrap';
-            
+
+            // Create VIP badge if user is VIP
+            const vipBadge = document.createElement('span');
             if (user.profileData.isVip) {
-                nameSpan.style.color = '#FFD700';
-                nameSpan.style.fontWeight = '600';
-                
-                const vipBadge = document.createElement('span');
                 vipBadge.textContent = 'VIP';
                 vipBadge.style.fontSize = '11px';
                 vipBadge.style.padding = '2px 6px';
                 vipBadge.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
                 vipBadge.style.borderRadius = '4px';
-                vipBadge.style.marginLeft = 'auto';
+                vipBadge.style.marginLeft = '8px';
+                vipBadge.style.color = '#FFD700';
+                vipBadge.style.fontWeight = '600';
                 vipBadge.style.flexShrink = '0';
-                listItem.appendChild(vipBadge);
+                listItem.appendChild(vipBadge); // Add VIP badge
             }
 
-            listItem.appendChild(statusDot);
+            // Add name span to list item
             listItem.appendChild(nameSpan);
-            
-            const detailsButton = document.createElement('button');
-            detailsButton.innerText = 'Details';
-            detailsButton.style.marginLeft = 'auto';
-            detailsButton.style.backgroundColor = '#4CAF50';
-            detailsButton.style.color = '#FFFFFF';
-            detailsButton.style.border = 'none';
-            detailsButton.style.borderRadius = '4px';
-            detailsButton.style.cursor = 'pointer';
-            detailsButton.style.padding = '5px 10px';
-            detailsButton.style.fontSize = '12px';
 
-            detailsButton.onclick = () => fetchUserDetails(user.profileId);
+            // Add details icon
+            const detailsIcon = document.createElement('span');
+            detailsIcon.innerHTML = '&#9432;'; // Unicode character for information icon
+            detailsIcon.style.color = '#bbb';
+            detailsIcon.style.cursor = 'pointer';
+            detailsIcon.style.fontSize = '16px';
+            detailsIcon.style.marginLeft = '12px';
 
-            listItem.appendChild(detailsButton);
+            detailsIcon.onclick = () => fetchUserDetails(user.profileId);
+            listItem.appendChild(detailsIcon); // Add details icon
+
+            // Add status dot to list item
+            listItem.prepend(statusDot); // Change order to prepend
+
+            // Append the complete list item to the user list
             userList.appendChild(listItem);
         });
     }
+
 
 
     function fetchUserDetails(profileId) {
