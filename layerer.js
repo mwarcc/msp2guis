@@ -13,10 +13,10 @@ window.fetch = async function(u, o) {
         d.forEach(i => {
             i.tags.forEach(t => {
                 t.resourceIdentifiers.forEach(r => {
-                    if (r.key === "hair") r.key = gR();
+                    r.key = gR();
                 });
             });
-            if (i.additionalData?.MSP2Data?.Type === "hair") {
+            if (i.additionalData?.MSP2Data?.Type !== undefined) {
                 i.additionalData.MSP2Data.Type = gR();
             }
         });
