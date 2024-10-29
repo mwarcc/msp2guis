@@ -11,3 +11,4 @@ window.fetch = async (u, o) => {
     }
     return f(u, o);
 };
+//
