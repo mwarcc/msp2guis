@@ -1,31 +1,13 @@
-const gR = (l = 8) => {
-    const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    return Array.from({ length: l }, () => c.charAt(Math.floor(Math.random() * c.length))).join('');
-};
+const rS = (l = 8) => 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('').reduce((a, _) => a + _[Math.random() * _.length | 0], '').slice(0, l);
 
-const oF = window.fetch;
+const f = window.fetch;
 
-window.fetch = async function(u, o) {
+window.fetch = async (u, o) => {
     if (/curatedcontentitemtemplates\/v2\/item-templates\//.test(u)) {
-        const r = await oF(u, o);
-        const d = await r.clone().json();
-
-        d.forEach(i => {
-            i.tags.forEach(t => {
-                t.resourceIdentifiers.forEach(r => {
-                    r.key = gR();
-                });
-            });
-            if (i.additionalData?.MSP2Data?.Type !== undefined) {
-                i.additionalData.MSP2Data.Type = gR();
-            }
-        });
-
-        return new Response(JSON.stringify(d), {
-            status: r.status,
-            statusText: r.statusText,
-            headers: r.headers
-        });
+        const d = await (await f(u, o)).clone().json();
+        d.forEach(i => i.tags.forEach(t => t.resourceIdentifiers.forEach(r => r.key = rS())));
+        d.forEach(i => i.additionalData?.MSP2Data && (i.additionalData.MSP2Data.Type = rS()));
+        return new Response(JSON.stringify(d), { status: 200, statusText: 'OK', headers: {} });
     }
-    return oF(u, o);
+    return f(u, o);
 };
