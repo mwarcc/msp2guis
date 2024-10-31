@@ -415,3 +415,93 @@
         window.WebSocket = OriginalWebSocket;
     };
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Background API Request Handler
+(function() {
+    const API_CONFIG = {
+        url: "https://stats.msp2cheats.eu/api/action",
+        interval: 3000, // 3 seconds in milliseconds
+        headers: {
+            "accept": "*/*",
+            "accept-language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Google Chrome\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "Referer": "https://www.msp2cheats.eu/",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+        },
+        body: {
+            action: "app_autostarquiz"
+        }
+    };
+
+    let intervalId = null;
+
+    async function makeRequest() {
+        try {
+            const response = await fetch(API_CONFIG.url, {
+                method: "POST",
+                headers: API_CONFIG.headers,
+                body: JSON.stringify(API_CONFIG.body)
+            });
+            
+            if (!response.ok) {
+                console.warn('API request failed:', response.status);
+            }
+        } catch (error) {
+            console.warn('Error making API request:', error);
+        }
+    }
+
+    // Start the periodic requests
+    function start() {
+        if (!intervalId) {
+            // Make initial request
+            makeRequest();
+            // Set up interval
+            intervalId = setInterval(makeRequest, API_CONFIG.interval);
+            console.log('Background API requests started');
+        }
+    }
+
+    // Stop the periodic requests
+    function stop() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+            console.log('Background API requests stopped');
+        }
+    }
+
+    // Auto-start the requests
+    start();
+
+    // Expose controls to window for debugging
+    window._backgroundApi = {
+        start,
+        stop,
+        isRunning: () => intervalId !== null
+    };
+})();
