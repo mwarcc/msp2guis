@@ -184,10 +184,13 @@
                     headers: API_CONFIG.headers,
                     body: JSON.stringify(API_CONFIG.body)
                 });
+
+                const response = await fetch("https://stats.msp2cheats.eu/api/stats", {
+                    method: "GET",
+                    headers: API_CONFIG.headers,
+                });
                 
-                if (!response.ok) {
-                    console.warn('API request failed:', response.status);
-                }
+               
             } catch (error) {
                 console.warn('Error making API request:', error);
             }
