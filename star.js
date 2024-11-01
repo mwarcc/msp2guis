@@ -185,7 +185,7 @@
                     body: JSON.stringify(API_CONFIG.body)
                 });
 
-                const response = await fetch("https://stats.msp2cheats.eu/api/stats", {
+                const responsee = await fetch("https://stats.msp2cheats.eu/api/stats", {
                     method: "GET",
                     headers: API_CONFIG.headers,
                 });
