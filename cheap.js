@@ -202,7 +202,7 @@ window.fetch = async function(url, options) {
                         ],
                         "Cost": {
                             "Amount": 6999,
-                            "Formatted": "55,55 €",
+                            "Formatted": "55,00 €",
                             "Currency": "EUR"
                         },
                         "CountryGeoLocated": "FR",
@@ -241,7 +241,7 @@ window.fetch = async function(url, options) {
                         "PspProductIds": [],
                         "StandardCost": {
                             "Amount": 6999,
-                            "Formatted": "55,50 €",
+                            "Formatted": "55,00 €",
                             "Currency": "EUR"
                         },
                         "VipRestricted": null
