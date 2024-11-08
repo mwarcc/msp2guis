@@ -41423,5 +41423,1405 @@
             "onSale": true
         },
         "lookUpId": "msp2_pet_wingcamp_2024_dragon2_dg_prop"
+    },
+
+
+    {
+        "id": "9937",
+        "item": {
+            "id": "9937",
+            "type": "item",
+            "singlePurchase": false,
+            "objectSource": "curatedcontentitemtemplates",
+            "objectId": "9937",
+            "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+            ],
+            "tags": [
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "61",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_GIRL",
+                        "type": "label"
+                    },
+                    {
+                        "key": "girl",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "gender"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "102",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_DRESS",
+                        "type": "label"
+                    },
+                    {
+                        "key": "dress",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "107",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_DRESS_MINI",
+                        "type": "label"
+                    },
+                    {
+                        "key": "dress",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.102"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "109",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_DRESS_PARTY",
+                        "type": "label"
+                    },
+                    {
+                        "key": "dress",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.102"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "153",
+                "lookUpId": "tag_clothes",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CLOTHES",
+                        "type": "label"
+                    },
+                    {
+                        "key": "clothes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "174",
+                "lookUpId": "tag_vip_item",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_VIP",
+                        "type": "label"
+                    },
+                    {
+                        "key": "vip_item",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "578",
+                "lookUpId": "TAG_PACK",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_D_PACK",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "607",
+                "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "collection.campaign"
+            }
+        ],
+            "lookUpId": "msp2_pet_wingcamp_2024_dragon2_dg_prop",
+            "additionalData": {
+            "NebulaData": {
+                "DefaultColors": "#4A4A4A,#191919,#616161,#AAAAAA,#000000",
+                "Snapshot": "msp2_chain_2022_girltop_tk_preview"
+            },
+            "MSP2Data": {
+                "Type": "top,bottom"
+            }
+        },
+        "shopId": 6,
+        "price": {
+            "currency": "soft",
+            "salesPrice": 0.0,
+            "onSale": true
+        },
+        "lookUpId": "msp2_pet_wingcamp_2024_dragon2_dg_prop"
+    }},
+    {
+    "id": "9938",
+    "item": {
+        "id": "9938",
+        "type": "item",
+        "singlePurchase": false,
+        "objectSource": "curatedcontentitemtemplates",
+        "objectId": "9938",
+        "resourceIdentifiers": [
+            {
+                "key": "TAG_CHAINED_CAMPAIGN_2024",
+                "type": "label"
+            },
+            {
+                "type": "graphics"
+            }
+        ],
+        "tags": [
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "55",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_TOPS",
+                        "type": "label"
+                    },
+                    {
+                        "key": "tops",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "60",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_BOY",
+                        "type": "label"
+                    },
+                    {
+                        "key": "boy",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "gender"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "136",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_TOPS_MISC",
+                        "type": "label"
+                    },
+                    {
+                        "key": "tops",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.55"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "153",
+                "lookUpId": "tag_clothes",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CLOTHES",
+                        "type": "label"
+                    },
+                    {
+                        "key": "clothes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "174",
+                "lookUpId": "tag_vip_item",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_VIP",
+                        "type": "label"
+                    },
+                    {
+                        "key": "vip_item",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "578",
+                "lookUpId": "TAG_PACK",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_D_PACK",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "607",
+                "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "collection.campaign"
+            }
+        ],
+        "lookUpId": "4c2b0174-982d-444b-b694-24bd3c7c22a3",
+        "additionalData": {
+            "NebulaData": {
+                "DefaultColors": "#171717,#343434,#FFFFFF,#AFAFAF,#232323",
+                "Snapshot": "msp2_chain_2022_boytop_tk_preview"
+            },
+            "MSP2Data": {
+                "Type": "top"
+            }
+        },
+        "shopId": 6,
+        "price": {
+            "currency": "soft",
+            "salesPrice": 0.0,
+            "onSale": true
+        },
+        "nameResourceIdentifier": "Un-opchainable",
+        "graphicsResourceIdentifier": "msp2_chain_2022_boytop_tk_bundle?msp2_chain_2022_boytop_tk_asset"
     }
+    },
+    {
+    "id": "9939",
+    "item": {
+        "id": "9939",
+        "type": "item",
+        "singlePurchase": false,
+        "objectSource": "curatedcontentitemtemplates",
+        "objectId": "9939",
+        "resourceIdentifiers": [
+            {
+                "key": "TAG_CHAINED_CAMPAIGN_2024",
+                "type": "label"
+            },
+            {
+                "type": "graphics"
+            }
+        ],
+        "tags": [
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "54",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_HAIR",
+                        "type": "label"
+                    },
+                    {
+                        "key": "hair",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "61",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_GIRL",
+                        "type": "label"
+                    },
+                    {
+                        "key": "girl",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "gender"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "79",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_HAIR_LONG",
+                        "type": "label"
+                    },
+                    {
+                        "key": "hair",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.54"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "83",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_HAIR_STYLED",
+                        "type": "label"
+                    },
+                    {
+                        "key": "hair",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.54"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "154",
+                "lookUpId": "tag_beauty",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_BEAUTY",
+                        "type": "label"
+                    },
+                    {
+                        "key": "beauty",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "174",
+                "lookUpId": "tag_vip_item",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_VIP",
+                        "type": "label"
+                    },
+                    {
+                        "key": "vip_item",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "578",
+                "lookUpId": "TAG_PACK",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_D_PACK",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "607",
+                "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "collection.campaign"
+            }
+        ],
+        "lookUpId": "651c0248-f905-47a0-b762-e5ededa84b38",
+        "additionalData": {
+            "NebulaData": {
+                "DefaultColors": "#3E4096,#B977FF,#393939",
+                "Snapshot": "msp2_chain_2022_girlhair_tk_preview"
+            },
+            "MSP2Data": {
+                "Type": "hair"
+            }
+        },
+        "shopId": 6,
+        "price": {
+            "currency": "soft",
+            "salesPrice": 0.0,
+            "onSale": true
+        },
+        "nameResourceIdentifier": "Whiplash",
+        "graphicsResourceIdentifier": "msp2_chain_2022_girlhair_tk_bundle?msp2_chain_2022_girlhair_tk_asset"
+    }
+    },
+    {
+    "id": "9940",
+    "item": {
+        "id": "9940",
+        "type": "item",
+        "singlePurchase": false,
+        "objectSource": "curatedcontentitemtemplates",
+        "objectId": "9940",
+        "resourceIdentifiers": [
+            {
+                "key": "TAG_CHAINED_CAMPAIGN_2024",
+                "type": "label"
+            },
+            {
+                "type": "graphics"
+            }
+        ],
+        "tags": [
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "54",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_HAIR",
+                        "type": "label"
+                    },
+                    {
+                        "key": "hair",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "60",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_BOY",
+                        "type": "label"
+                    },
+                    {
+                        "key": "boy",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "gender"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "78",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_HAIR_SHORT",
+                        "type": "label"
+                    },
+                    {
+                        "key": "hair",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.54"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "83",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_HAIR_STYLED",
+                        "type": "label"
+                    },
+                    {
+                        "key": "hair",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.54"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "154",
+                "lookUpId": "tag_beauty",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_BEAUTY",
+                        "type": "label"
+                    },
+                    {
+                        "key": "beauty",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "174",
+                "lookUpId": "tag_vip_item",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_VIP",
+                        "type": "label"
+                    },
+                    {
+                        "key": "vip_item",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "578",
+                "lookUpId": "TAG_PACK",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_D_PACK",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "607",
+                "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "collection.campaign"
+            }
+        ],
+        "lookUpId": "ee5b7707-9425-4d67-866e-0b38ace625b1",
+        "additionalData": {
+            "NebulaData": {
+                "DefaultColors": "#3E7197,#4F565C,#979797",
+                "Snapshot": "msp2_chain_2022_boyhair_tk_preview"
+            },
+            "MSP2Data": {
+                "Type": "hair"
+            }
+        },
+        "shopId": 6,
+        "price": {
+            "currency": "soft",
+            "salesPrice": 0.0,
+            "onSale": true
+        },
+        "nameResourceIdentifier": "The Strong Link",
+        "graphicsResourceIdentifier": "msp2_chain_2022_boyhair_tk_bundle?msp2_chain_2022_boyhair_tk_asset"
+    }
+    },
+    {
+    "id": "9941",
+    "item": {
+        "id": "9941",
+        "type": "item",
+        "singlePurchase": false,
+        "objectSource": "curatedcontentitemtemplates",
+        "objectId": "9941",
+        "resourceIdentifiers": [
+            {
+                "key": "TAG_CHAINED_CAMPAIGN_2024",
+                "type": "label"
+            },
+            {
+                "type": "graphics"
+            }
+        ],
+        "tags": [
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "57",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_FOOTWEAR",
+                        "type": "label"
+                    },
+                    {
+                        "key": "shoes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "61",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_GIRL",
+                        "type": "label"
+                    },
+                    {
+                        "key": "girl",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "gender"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "112",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_FOOTWEAR_HEELED",
+                        "type": "label"
+                    },
+                    {
+                        "key": "shoes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.57"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "153",
+                "lookUpId": "tag_clothes",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CLOTHES",
+                        "type": "label"
+                    },
+                    {
+                        "key": "clothes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "174",
+                "lookUpId": "tag_vip_item",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_VIP",
+                        "type": "label"
+                    },
+                    {
+                        "key": "vip_item",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "578",
+                "lookUpId": "TAG_PACK",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_D_PACK",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "607",
+                "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "collection.campaign"
+            }
+        ],
+        "lookUpId": "36abd3ed-cc83-4983-990f-1c9494a01c1a",
+        "additionalData": {
+            "NebulaData": {
+                "DefaultColors": "#030303,#191919,#AAAAAA",
+                "Snapshot": "msp2_chain_2022_girlshoes_tk_preview"
+            },
+            "MSP2Data": {
+                "Type": "shoe"
+            }
+        },
+        "shopId": 6,
+        "price": {
+            "currency": "soft",
+            "salesPrice": 0.0,
+            "onSale": true
+        },
+        "nameResourceIdentifier": "Tethered",
+        "graphicsResourceIdentifier": "msp2_chain_2022_girlshoes_tk_bundle?msp2_chain_2022_girlshoes_tk_asset"
+       }
+    },
+    {
+    "id": "9942",
+    "item": {
+        "id": "9942",
+        "type": "item",
+        "singlePurchase": false,
+        "objectSource": "curatedcontentitemtemplates",
+        "objectId": "9942",
+        "resourceIdentifiers": [
+            {
+                "key": "TAG_CHAINED_CAMPAIGN_2024",
+                "type": "label"
+            },
+            {
+                "type": "graphics"
+            }
+        ],
+        "tags": [
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "57",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_FOOTWEAR",
+                        "type": "label"
+                    },
+                    {
+                        "key": "shoes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "60",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_BOY",
+                        "type": "label"
+                    },
+                    {
+                        "key": "boy",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "gender"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "111",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_FOOTWEAR_FLATSHOES",
+                        "type": "label"
+                    },
+                    {
+                        "key": "shoes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "subcategory.clothes.57"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "153",
+                "lookUpId": "tag_clothes",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CLOTHES",
+                        "type": "label"
+                    },
+                    {
+                        "key": "clothes",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "category.clothes"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "174",
+                "lookUpId": "tag_vip_item",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_VIP",
+                        "type": "label"
+                    },
+                    {
+                        "key": "vip_item",
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "578",
+                "lookUpId": "TAG_PACK",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_D_PACK",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "meta"
+            },
+            {
+                "gameId": "5lxc",
+                "hidden": false,
+                "id": "607",
+                "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+                "resourceIdentifiers": [
+                    {
+                        "key": "TAG_CHAINED_CAMPAIGN_2024",
+                        "type": "label"
+                    },
+                    {
+                        "type": "graphics"
+                    }
+                ],
+                "type": "collection.campaign"
+            }
+        ],
+        "lookUpId": "773a3e33-72b5-4aad-9d0c-a720aa5187fc",
+        "additionalData": {
+            "NebulaData": {
+                "DefaultColors": "#0F0F0F,#252525,#000000,#AAAAAA",
+                "Snapshot": "msp2_chain_2022_boyshoes_tk_preview"
+            },
+            "MSP2Data": {
+                "Type": "shoe"
+            }
+        },
+        "shopId": 6,
+        "price": {
+            "currency": "soft",
+            "salesPrice": 0.0,
+            "onSale": true
+        },
+        "nameResourceIdentifier": "Chain Chonk",
+        "graphicsResourceIdentifier": "msp2_chain_2022_boyshoes_tk_bundle?msp2_chain_2022_boyshoes_tk_asset"
+        }
+    },
+    {
+    "id": "9943",
+    "created": "2022-11-11T15:11:20",
+    "modified": "2022-11-14T11:05:42",
+    "tags": [
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "61",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_GIRL",
+            "type": "label"
+          },
+          {
+            "key": "girl",
+            "type": "graphics"
+          }
+        ],
+        "type": "gender"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "146",
+        "lookUpId": "tag_eyes",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_EYES",
+            "type": "label"
+          },
+          {
+            "key": "eyes",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.clothes"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "154",
+        "lookUpId": "tag_beauty",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_BEAUTY",
+            "type": "label"
+          },
+          {
+            "key": "beauty",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.clothes"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "174",
+        "lookUpId": "tag_vip_item",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_VIP",
+            "type": "label"
+          },
+          {
+            "key": "vip_item",
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "578",
+        "lookUpId": "TAG_PACK",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_D_PACK",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "607",
+        "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_CHAINED_CAMPAIGN_2024",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "collection.campaign"
+      }
+    ],
+    "additionalData": {
+      "NebulaData": {
+        "DefaultColors": "#304051,#E5CD55",
+        "Snapshot": "msp2_chain_2022_girleyes_tk_preview"
+      },
+      "MSP2Data": {
+        "Type": "eyes"
+      }
+    },
+    "graphicsResourceIdentifier": "msp2_chain_2022_girleyes_tk_bundle?msp2_chain_2022_girleyes_tk_asset",
+    "lookUpId": "4e469daa-cdfe-4735-aed8-a5fe9d505d31",
+    "nameResourceIdentifier": "Captivators"
+  },
+  {
+    "id": "9944",
+    "created": "2022-11-11T15:12:01",
+    "modified": "2022-11-14T11:05:55",
+    "tags": [
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "60",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_BOY",
+            "type": "label"
+          },
+          {
+            "key": "boy",
+            "type": "graphics"
+          }
+        ],
+        "type": "gender"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "146",
+        "lookUpId": "tag_eyes",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_EYES",
+            "type": "label"
+          },
+          {
+            "key": "eyes",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.clothes"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "154",
+        "lookUpId": "tag_beauty",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_BEAUTY",
+            "type": "label"
+          },
+          {
+            "key": "beauty",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.clothes"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "174",
+        "lookUpId": "tag_vip_item",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_VIP",
+            "type": "label"
+          },
+          {
+            "key": "vip_item",
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "578",
+        "lookUpId": "TAG_PACK",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_D_PACK",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "607",
+        "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_CHAINED_CAMPAIGN_2024",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "collection.campaign"
+      }
+    ],
+    "additionalData": {
+      "NebulaData": {
+        "DefaultColors": "#304051,#E5CD55",
+        "Snapshot": "msp2_chain_2022_boyeyes_tk_preview"
+      },
+      "MSP2Data": {
+        "Type": "eyes"
+      }
+    },
+    "graphicsResourceIdentifier": "msp2_chain_2022_boyeyes_tk_bundle?msp2_chain_2022_boyeyes_tk_asset",
+    "lookUpId": "371eb5f8-e259-4106-8fef-3c83f08b7517",
+    "nameResourceIdentifier": "Captivators"
+  },
+  {
+    "id": "9945",
+    "created": "2022-11-11T15:12:40",
+    "modified": "2022-11-14T11:06:08",
+    "tags": [
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "61",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_GIRL",
+            "type": "label"
+          },
+          {
+            "key": "girl",
+            "type": "graphics"
+          }
+        ],
+        "type": "gender"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "147",
+        "lookUpId": "tag_brows",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_BROWS",
+            "type": "label"
+          },
+          {
+            "key": "brows",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.clothes"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "154",
+        "lookUpId": "tag_beauty",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_BEAUTY",
+            "type": "label"
+          },
+          {
+            "key": "beauty",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.clothes"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "174",
+        "lookUpId": "tag_vip_item",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_VIP",
+            "type": "label"
+          },
+          {
+            "key": "vip_item",
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "578",
+        "lookUpId": "TAG_PACK",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_D_PACK",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "607",
+        "lookUpId": "TAG_CHAINED_CAMPAIGN_2024",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_CHAINED_CAMPAIGN_2024",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "collection.campaign"
+      }
+    ],
+    "additionalData": {
+      "NebulaData": {
+        "DefaultColors": "#000000",
+        "Snapshot": "msp2_chain_2022_girlbrow_tk_preview"
+      },
+      "MSP2Data": {
+        "Type": "brows"
+      }
+    },
+    "graphicsResourceIdentifier": "msp2_chain_2022_girlbrow_tk_bundle?msp2_chain_2022_girlbrow_tk_asset",
+    "lookUpId": "25e93f9c-24d9-4e18-91f2-e17502fe3ff4",
+    "nameResourceIdentifier": "Edgerunner"
+  },
+  {
+    "created": "2022-11-14T14:25:08",
+    "id": "9962",
+    "modified": "2022-11-14T14:25:08",
+    "tags": [
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "174",
+        "lookUpId": "tag_vip_item",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_VIP",
+            "type": "label"
+          },
+          {
+            "key": "vip_item",
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": true,
+        "id": "185",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_PET",
+            "type": "label"
+          },
+          {
+            "key": "pet",
+            "type": "graphics"
+          }
+        ],
+        "type": "category.items"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "336",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_CHAINED_CAMPAIGN_2022",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "collection.campaign"
+      },
+      {
+        "gameId": "5lxc",
+        "hidden": false,
+        "id": "578",
+        "lookUpId": "TAG_PACK",
+        "resourceIdentifiers": [
+          {
+            "key": "TAG_D_PACK",
+            "type": "label"
+          },
+          {
+            "type": "graphics"
+          }
+        ],
+        "type": "meta"
+      }
+    ],
+    "additionalData": {
+      "NebulaData": {
+        "Snapshot": "msp2_pet_chain_2022_galago_tk_preview"
+      },
+      "MSP2Data": {}
+    },
+    "graphicsResourceIdentifier": "msp2_pet_chain_2022_galago_tk_prop",
+    "lookUpId": "2b8bdad9-4283-4157-8d9a-d526ffa6d8a0",
+    "nameResourceIdentifier": "Gege"
+  }
 ]
