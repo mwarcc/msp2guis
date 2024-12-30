@@ -66,7 +66,7 @@ class ItemLayeringService {
 
     setupToggleListener() {
         window.addEventListener('keydown', (event) => {
-            if (event.shiftKey && event.key === '1') {
+           if (event.shiftKey && (event.key === 'a' || event.key === 'A')) {
                 this.enabled = !this.enabled;
                 console.log(`ItemLayeringService is now ${this.enabled ? 'enabled' : 'disabled'}`);
             }
