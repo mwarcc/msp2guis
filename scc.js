@@ -172,8 +172,9 @@ window.msp2Client = msp2Client;
 
 class ItemLayeringService {
     constructor() {
-        this.enabled = true;
+        this.enabled = false; // Disabled by default
         this.initialize();
+        this.setupToggleListener();
     }
 
     initialize() {
@@ -201,7 +202,11 @@ class ItemLayeringService {
             const response = await originalFetch.apply(window, args);
             const data = await response.clone().json();
             this.processItemTemplates(data);
-            return new Response(JSON.stringify(data), { status: 200, statusText: 'OK', headers: { 'Content-Type': 'application/json' },});
+            return new Response(JSON.stringify(data), {
+                status: 200,
+                statusText: 'OK',
+                headers: { 'Content-Type': 'application/json' },
+            });
         } catch (error) {
             console.error('Error processing item templates:', error);
             return originalFetch.apply(window, args);
@@ -229,6 +234,15 @@ class ItemLayeringService {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
+    }
+
+    setupToggleListener() {
+        window.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === '1') {
+                this.enabled = !this.enabled;
+                console.log(`ItemLayeringService is now ${this.enabled ? 'enabled' : 'disabled'}`);
+            }
+        });
     }
 }
 
