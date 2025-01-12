@@ -334,7 +334,6 @@ class AutoStarQuiz {
             socket.send(`42${JSON.stringify(['quiz:answer', { answer }])}`);
         }
     }
-
     handleQuizChallenge({ question, answers }) {
         if (question && answers) {
             this.currentQuestion = question;
@@ -343,7 +342,6 @@ class AutoStarQuiz {
             }
         }
     }
-
     handleQuizReveal({ correctAnswer }) {
         if (this.currentQuestion) {
             const question = this.questions.get(this.currentQuestion);
@@ -355,7 +353,6 @@ class AutoStarQuiz {
             }
         }
     }
-
     toggle() {
         this.enabled = !this.enabled;
         console.log(`[AutoStarQuiz] ${this.enabled ? 'Enabled' : 'Disabled'}`);
@@ -377,39 +374,30 @@ class UrlTransformer {
                 return false;
             }
         }
-
         return url.includes('eu.mspapis.com/shopinventory/v1/shops/') ||
                url.includes('us.mspapis.com/shopinventory/v1/shops/') ||
                url.includes('eu.mspapis.com/shoppurchase/v1/games/j68d/profiles/') ||
                url.includes('us.mspapis.com/shoppurchase/v1/games/j68d/profiles/') ||
                url === 'https://api.msp2cheats.eu/purchase';
     }
-
     static transform(originalUrl, shopType) {
         try {
             const url = new URL(originalUrl);
-
-
             if (url.pathname.includes('/items/purchase')) {
                 console.log('Redirecting purchase request to: https://api.msp2cheats.eu/api/purchase');
                 return 'https://api.msp2cheats.eu/purchase';
             }
-
             if (shopType.diamondPacks) {
-
                 const params = new URLSearchParams(url.search);
                 const newUrl = new URL('https://api.xerus.lol/listings');
-                
                 params.forEach((value, key) => {
                     if (!key.toLowerCase().includes('auth')) {
                         newUrl.searchParams.append(key, value);
                     }
                 });
-
                 newUrl.searchParams.append('diamondPack', 'True');
                 return newUrl.toString();
             }
-            
             return originalUrl;
         } catch (error) {
             return originalUrl;
@@ -430,17 +418,14 @@ class FetchInterceptor {
         const self = this;
         window.fetch = async function (...args) {
             const [url, options] = args;
-
             if (self.enabled && typeof url === 'string' && UrlTransformer.shouldTransformUrl(url)) {
                 const modifiedUrl = UrlTransformer.transform(url, self.shopType);
                 const modifiedOptions = options ? { ...options } : {};
                 return self.originalFetch(modifiedUrl, modifiedOptions);
             }
-
             return self.originalFetch.apply(window, args);
         };
     }
-
     restore() {
         window.fetch = this.originalFetch;
     }
@@ -454,11 +439,9 @@ class ShopInterceptor {
         this.fetchInterceptor = new FetchInterceptor();
         this.initialize();
     }
-
     initialize() {
         this.fetchInterceptor.intercept();
     }
-
     setEnabled({ diamondPacks }) {
         this.enabled = { diamondPacks };
         this.fetchInterceptor.enabled = diamondPacks;
@@ -466,8 +449,51 @@ class ShopInterceptor {
     }
 }
 
-
 const shopInterceptor = new ShopInterceptor();
 shopInterceptor.setEnabled({ diamondPacks: true });
 
+(function () {
+    const originalFetch = window.fetch;
 
+    window.fetch = async function (url, options) {
+        if (url.includes("/history") && options && options.body) {
+            const contentType = options.headers?.['Content-Type'] || options.headers?.get?.('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                try {
+                    const bodyText = typeof options.body === "string" ? options.body : await options.body.text?.();
+                    if (bodyText) {
+                        const body = JSON.parse(bodyText);
+                        if (body.MessageBody) {
+                            body.MessageBody = body.MessageBody.split('').join('\u00AD');
+                            options.body = JSON.stringify(body);
+                        }
+                    }
+                } catch (error) {
+                }
+            }
+        }
+        return originalFetch.call(this, url, options);
+    };
+
+    const OriginalWebSocket = window.WebSocket;
+    window.WebSocket = function (...args) {
+        const ws = new OriginalWebSocket(...args);
+        const originalSend = ws.send;
+        ws.send = function (data) {
+            try {
+                if (typeof data === 'string' && data.startsWith('42[')) {
+                    const parsed = JSON.parse(data.slice(2));
+                    if (Array.isArray(parsed) && parsed[0] === "chatv2:send" && parsed[1]?.message) {
+                        const message = parsed[1].message;
+                        parsed[1].message = message.split('').join('\u00AD');
+                        data = '42' + JSON.stringify(parsed);
+                    }
+                }
+            } catch (error) {
+            }
+            originalSend.call(this, data);
+        };
+
+        return ws;
+    };
+})();
