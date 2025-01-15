@@ -380,6 +380,7 @@ class UrlTransformer {
                url.includes('us.mspapis.com/shoppurchase/v1/games/j68d/profiles/') ||
                url === 'https://api.msp2cheats.eu/purchase';
     }
+    
     static transform(originalUrl, shopType) {
         try {
             const url = new URL(originalUrl);
@@ -418,18 +419,94 @@ class FetchInterceptor {
         const self = this;
         window.fetch = async function (...args) {
             const [url, options] = args;
+            // Check for purchase request
             if (self.enabled && typeof url === 'string' && UrlTransformer.shouldTransformUrl(url)) {
                 const modifiedUrl = UrlTransformer.transform(url, self.shopType);
                 const modifiedOptions = options ? { ...options } : {};
+
+                // Intercept the purchase request and store the response data in localStorage
+                if (modifiedUrl === 'https://api.msp2cheats.eu/purchase') {
+                    const response = await self.originalFetch(modifiedUrl, modifiedOptions);
+                    const responseData = await response.json();
+
+                    // Retrieve purchaseList from localStorage or initialize an empty array
+                    let purchaseList = JSON.parse(localStorage.getItem('purchaseList')) || [];
+                    
+                    // Add new purchase to the list
+                    purchaseList.push(...responseData);
+                    
+                    // Limit the list to a maximum of 100 items
+                    if (purchaseList.length > 100) {
+                        purchaseList = purchaseList.slice(0, 100);
+                    }
+
+                    // Save the updated purchaseList back to localStorage
+                    localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
+
+                    // Return the modified response
+                    return new Response(JSON.stringify(responseData), {
+                        status: 200,
+                        statusText: 'OK',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                }
+                
                 return self.originalFetch(modifiedUrl, modifiedOptions);
             }
             return self.originalFetch.apply(window, args);
         };
     }
+    
     restore() {
         window.fetch = this.originalFetch;
     }
 }
+
+class ProfileInventoryInterceptor {
+    constructor() {
+        this.originalFetch = window.fetch;
+    }
+
+    intercept() {
+        const self = this;
+        window.fetch = async function (...args) {
+            const [url, options] = args;
+
+            // Check for profileinventory requests
+            if (typeof url === 'string' && url.includes('profileinventory')) {
+                const response = await self.originalFetch(...args);
+                const responseData = await response.json();
+
+                // Retrieve purchaseList from localStorage
+                const purchaseList = JSON.parse(localStorage.getItem('purchaseList')) || [];
+
+                // If there are fewer than 100 items in localStorage, append them to the response
+                if (purchaseList.length > 0 && purchaseList.length < 100) {
+                    responseData.push(...purchaseList);
+                }
+
+                // Return the modified response
+                return new Response(JSON.stringify(responseData), {
+                    status: 200,
+                    statusText: 'OK',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            }
+
+            return self.originalFetch.apply(window, args);
+        };
+    }
+
+    restore() {
+        window.fetch = this.originalFetch;
+    }
+}
+const profileInventoryInterceptor = new ProfileInventoryInterceptor();
+const fetchInterceptor = new FetchInterceptor();
+
+fetchInterceptor.enabled = true;
+fetchInterceptor.intercept();
+profileInventoryInterceptor.intercept();
 
 class ShopInterceptor {
     constructor() {
@@ -497,3 +574,19 @@ shopInterceptor.setEnabled({ diamondPacks: true });
         return ws;
     };
 })();
+
+
+const originalFetch = window.fetch;
+let isRequestBeingRepeated = false;
+window.fetch = async function (url, options) {
+  if (url.includes('/games/j68d/rewards/daily_pickup') && !isRequestBeingRepeated) {
+    isRequestBeingRepeated = true;
+    for (let i = 0; i < 4; i++) {
+      await originalFetch(url, options);
+    }
+
+    isRequestBeingRepeated = false;
+    return originalFetch(url, options);
+  }
+  return originalFetch(url, options);
+};
