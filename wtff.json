@@ -140,7 +140,8 @@
             }
           ]
         }
-      },
+      }
+    },
     "price": {
       "currency": "soft",
       "salesPrice": 0
