@@ -1,0 +1,182 @@
+[
+  {
+    "id": "16362",
+    "item": {
+      "id": "16362",
+      "type": "item",
+      "singlePurchase": false,
+      "objectSource": "curatedcontentitemtemplates",
+      "objectId": "16362",
+      "resourceIdentifiers": [
+        {
+          "type": "name",
+          "key": "Kneeling Heart"
+        },
+        {
+          "type": "graphics",
+          "key": "msp2_mycamp_2025_boybot_tk_bundle?msp2_mycamp_2025_boybot_tk_asset"
+        }
+      ],
+      "tags": [
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "56",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BOTTOMS"
+            },
+            {
+              "type": "graphics",
+              "key": "bottoms"
+            }
+          ],
+          "type": "category.clothes"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "60",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BOY"
+            },
+            {
+              "type": "graphics",
+              "key": "boy"
+            }
+          ],
+          "type": "gender"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "94",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BOTTOMS_JEANS"
+            },
+            {
+              "type": "graphics",
+              "key": "bottoms"
+            }
+          ],
+          "type": "subcategory.clothes.56"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "101",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BOTTOMS_WIDE"
+            },
+            {
+              "type": "graphics",
+              "key": "bottoms"
+            }
+          ],
+          "type": "subcategory.clothes.56"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "153",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_CLOTHES"
+            },
+            {
+              "type": "graphics",
+              "key": "clothes"
+            }
+          ],
+          "type": "category.clothes",
+          "lookUpId": "tag_clothes"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "174",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_VIP"
+            },
+            {
+              "type": "graphics",
+              "key": "vip_item"
+            }
+          ],
+          "type": "meta",
+          "lookUpId": "tag_vip_item"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "578",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_D_PACK"
+            },
+            {
+              "type": "graphics",
+              "key": ""
+            }
+          ],
+          "type": "meta",
+          "lookUpId": "TAG_PACK"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "828",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_MY_ONE_AND_ONLY_CAMPAIGN_2025"
+            },
+            {
+              "type": "graphics",
+              "key": ""
+            }
+          ],
+          "type": "collection.campaign",
+          "lookUpId": "TAG_MY_ONE_AND_ONLY_CAMPAIGN_2025"
+        }
+      ],
+      "lookUpId": "msp2_mycamp_2025_boybot_tk",
+      "additionalData": {
+        "NebulaData": {
+          "DefaultColors": "#11###{{{{]]]]]#,#",
+          "Snapshot": "msp2_mycamp_2025_boybot_tk_preview"
+        },
+        "MSP2Data": {
+          "Type": "bottom"
+        },
+        "GameData": {
+          "Size": [-0.915159941, -0.1],
+          "Spacing": {
+            "id": -0.620847464 - 0.1
+          },
+          "Angle": [
+            {
+              "id": 0
+            }
+          ]
+        }
+      },
+      "price": {
+        "currency": "soft",
+        "salesPrice": 0
+      },
+      "shopId": "1337"
+    }
+  }
+]
