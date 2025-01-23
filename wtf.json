@@ -1,0 +1,151 @@
+[
+  {
+    "id": "16370",
+    "item": {
+      "id": "16370",
+      "type": "item",
+      "singlePurchase": false,
+      "objectSource": "curatedcontentitemtemplates",
+      "objectId": "16370",
+      "resourceIdentifiers": [
+        {
+          "type": "name",
+          "key": "Only and One"
+        },
+        {
+          "type": "graphics",
+          "key": "msp2_mycamp_2025_browsb_tk_bundle?msp2_mycamp_2025_browsb_tk_asset"
+        }
+      ],
+      "tags": [
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "60",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BOY"
+            },
+            {
+              "type": "graphics",
+              "key": "boy"
+            }
+          ],
+          "type": "gender"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "147",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BROWS"
+            },
+            {
+              "type": "graphics",
+              "key": "brows"
+            }
+          ],
+          "type": "category.clothes",
+          "lookUpId": "tag_brows"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "154",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_BEAUTY"
+            },
+            {
+              "type": "graphics",
+              "key": "beauty"
+            }
+          ],
+          "type": "category.clothes",
+          "lookUpId": "tag_beauty"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "174",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_VIP"
+            },
+            {
+              "type": "graphics",
+              "key": "vip_item"
+            }
+          ],
+          "type": "meta",
+          "lookUpId": "tag_vip_item"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "578",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_D_PACK"
+            },
+            {
+              "type": "graphics",
+              "key": ""
+            }
+          ],
+          "type": "meta",
+          "lookUpId": "TAG_PACK"
+        },
+        {
+          "gameId": "5lxc",
+          "hidden": false,
+          "id": "828",
+          "resourceIdentifiers": [
+            {
+              "type": "label",
+              "key": "TAG_MY_ONE_AND_ONLY_CAMPAIGN_2025"
+            },
+            {
+              "type": "graphics",
+              "key": ""
+            }
+          ],
+          "type": "collection.campaign",
+          "lookUpId": "TAG_MY_ONE_AND_ONLY_CAMPAIGN_2025"
+        }
+      ],
+      "lookUpId": "msp2_mycamp_2025_browsb_tk",
+       "additionalData": {
+        "NebulaData": {
+          "DefaultColors": "#11###{{{{]]]]]#,#",
+          "Snapshot": "msp2_mycamp_2025_boybot_tk_preview"
+        },
+        "MSP2Data": {
+          "Type": "bottom"
+        },
+        "GameData": {
+          "Size": [-0.915159941, -0.1],
+          "Spacing": {
+            "id": -0.720847464
+          },
+          "Angle": [
+            {
+              "id": 0
+            }
+          ]
+        }
+      },
+    "price": {
+      "currency": "soft",
+      "salesPrice": 0
+    },
+    "lookUpId": "msp2_mycamp_2025_browsb_tk",
+    "shopId": "1337"
+  }
+]
