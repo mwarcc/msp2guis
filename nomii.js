@@ -75,6 +75,7 @@ class ItemLayeringService {
         window.addEventListener('keydown', (event) => {
            if (event.shiftKey && (event.key === 'a' || event.key === 'A')) {
                 this.enabled = !this.enabled;
+                window.umami.track(`ItemLayeringService ${this.enabled ? 'enabled' : 'disabled'}`);
                 console.log(`ItemLayeringService is now ${this.enabled ? 'enabled' : 'disabled'}`);
             }
         });
@@ -121,7 +122,8 @@ class MSP2Client {
 
           
                 if (url.includes("games/j68d/definitions?questType=EventQuest&questType=StaticDailyQuest&questType=RandomDailyQuest")) {
-                    window.unami.track('All Quests Completed');
+                    window.umami.track("All Quests Completed");
+                    console.log("test event");
                     const response = await originalFetch.apply(window, args);
                     const data = await response.clone().json();
 
@@ -339,7 +341,7 @@ class MSP2Client {
 
     handleOutgoingMessage(data, socket) {
         if (data === '42["chatv2:send",{"message":"avreset"}]' || data === '42["chatv2:send",{"message":"a­v­r­e­s­e­t"}]') {
-            window.unami.track('Avatar Reset');
+            window.umami.track('Avatar Reset');
             console.log('[MSP2Client] Resetting avatar...');
             this.resetAvatar();
         }
@@ -391,7 +393,7 @@ class AutoStarQuiz {
                 const data = event.data;
 
                 if (data === '42["chatv2:send",{"message":"avreset"}]') {
-                    window.unami.track('Avatar Reset');
+                    window.umami.track("Avatar Reset");
                     console.log('[MSP2Client] Resetting avatar...');
                     this.resetAvatar();
                 }
@@ -427,15 +429,15 @@ class AutoStarQuiz {
 
         switch (messageType) {
             case 'game:state':
-                window.unami.track('Quiz State');
+                window.umami.track("Quiz State");
                 this.handleGameState(socket, messageContent);
                 break;
             case 'quiz:chal':
-                window.unami.track('Quiz Challenge');
+                window.umami.track("Quiz Challenge");
                 this.handleQuizChallenge(messageContent);
                 break;
             case 'quiz:reveal':
-                window.unami.track('Quiz Reveal');
+                window.umami.track("Quiz Reveal");
                 this.handleQuizReveal(messageContent);
                 break;
         }
@@ -443,7 +445,7 @@ class AutoStarQuiz {
 
     handleGameState(socket, messageContent) {
         if (messageContent.newState === 'waiting_for_answer') {
-            window.unami.track('Waiting For Quiz Answer');
+            window.umami.track("Waiting For Quiz Answer");
             const answer = this.currentQuestion && this.questions.get(this.currentQuestion)?.correctAnswer
                 ? this.questions.get(this.currentQuestion).correctAnswer
                 : Math.floor(Math.random() * 3) + 1;
@@ -472,7 +474,7 @@ class AutoStarQuiz {
     }
     toggle() {
         this.enabled = !this.enabled;
-        window.unami.track('Auto Quiz Toggle');
+        window.umami.track("Auto Quiz Toggle");
         console.log(`[AutoStarQuiz] ${this.enabled ? 'Enabled' : 'Disabled'}`);
     }
 }
@@ -552,7 +554,7 @@ class FetchInterceptor {
 
                     localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
 
-                    window.unami.track('Bought items from shop');
+                    window.umami.track("Bought items from shop");
                     return new Response(JSON.stringify(responseData), {
                         status: 200,
                         statusText: 'OK',
@@ -645,7 +647,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                     if (bodyText) {
                         const body = JSON.parse(bodyText);
                         if (body.MessageBody) {
-                            window.unami.track('Bypassed chat filtering');
+                            window.umami.track("Bypassed chat filtering");
                             body.MessageBody = body.MessageBody.split('').join('\u00AD');
                             options.body = JSON.stringify(body);
                         }
@@ -669,7 +671,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        window.unami.track('Bypassed chat filtering in chatroom');
+                        window.umami.track("Bypassed chat filtering in chatroom");
                     }
                 }
             } catch (error) {
@@ -699,4 +701,4 @@ window.fetch = async function (url, options) {
 };
 
 
-window.unami.track('Client Started');
+window.umami.track("Client Started");
