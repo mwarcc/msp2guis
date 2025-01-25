@@ -283,7 +283,7 @@ class MSP2Client {
         for (const petId of petIds) {
             try {
                 await fetch(
-                    `https://eu.mspapis.com/pets/v1/pets/${profileId}/interactions`,
+                    `https://eu.mspapis.com/pets/v1/pets/${petId}/interactions`,
                     {
                         method: 'POST',
                         headers: {
