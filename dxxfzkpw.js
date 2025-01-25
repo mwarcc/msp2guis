@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
     images.forEach((img) => {
       if (img.src.includes('moviestarplanet2.fr/img/main-bg.jpg')) {
         console.log('Redirecting main-bg.jpg to placeholder');
-        img.src = 'hhttps://wallpapercat.com/w/full/0/9/b/3445-3840x2160-desktop-4k-lamborghini-wallpaper-image.jpg'; 
+        img.src = 'https://wallpapercat.com/w/full/0/9/b/3445-3840x2160-desktop-4k-lamborghini-wallpaper-image.jpg'; 
       }
   
       if (img.src.includes('moviestarplanet2.fr/img/features/1_Welcome_2048.png')) {
