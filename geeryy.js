@@ -537,61 +537,88 @@ class FetchInterceptor {
 
   intercept() {
       const self = this;
+
+      // Intercept fetch requests
       window.fetch = async function (...args) {
           const [url, options] = args;
-          
-          // Log the intercepted URL to verify it's being intercepted
+
           console.log('Intercepted URL:', url);
 
           // Check if the URL is an image (using regex for common image extensions)
           const imageRegex = /\.(jpg|jpeg|png|gif|bmp|webp)$/i;
           if (typeof url === 'string' && imageRegex.test(url)) {
               console.log('Redirecting image URL:', url);
-
-              // Here, you can modify the URL for any image request
-              // Example: redirecting specific image URLs
+              // Here we intercept image URLs and redirect them
               if (url === 'https://moviestarplanet2.fr/img/main-bg.jpg' || 
                   url === 'https://moviestarplanet2.fr/img/features/1_Welcome_2048.png' ||
                   url === 'https://moviestarplanet2.fr/img/features/Shop_Dress%20Up.png') {
-
                   return self.originalFetch('https://images3.alphacoders.com/118/1181423.jpg', options);
               }
           }
 
-          // Handle other requests that don't match image URLs or those requiring transformations
-          if (self.enabled && UrlTransformer.shouldTransformUrl(url)) {
-              const modifiedUrl = UrlTransformer.transform(url, self.shopType);
-              const modifiedOptions = options ? { ...options } : {};
+          // Handling the purchase request (example: for 'https://api.msp2cheats.eu/purchase')
+          if (typeof url === 'string' && url === 'https://api.msp2cheats.eu/purchase') {
+              console.log('Intercepting purchase request:', url);
+              const response = await self.originalFetch(url, options);
+              const responseData = await response.json();
 
-              if (modifiedUrl === 'https://api.msp2cheats.eu/purchase') {
-                  const response = await self.originalFetch(modifiedUrl, modifiedOptions);
-                  const responseData = await response.json();
-                  let purchaseList = JSON.parse(localStorage.getItem('purchaseList')) || [];     
-                  purchaseList.push(...responseData);      
-                  if (purchaseList.length > 100) {
-                      purchaseList = purchaseList.slice(0, 100);
-                  }
-
-                  localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
-
-                  window.umami.track("Bought items from shop");
-                  return new Response(JSON.stringify(responseData), {
-                      status: 200,
-                      statusText: 'OK',
-                      headers: { 'Content-Type': 'application/json' }
-                  });
+              // Modify purchaseList logic
+              let purchaseList = JSON.parse(localStorage.getItem('purchaseList')) || [];     
+              purchaseList.push(...responseData);      
+              if (purchaseList.length > 100) {
+                  purchaseList = purchaseList.slice(0, 100);
               }
 
-              return self.originalFetch(modifiedUrl, modifiedOptions);
+              localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
+
+              // Track the purchase event
+              window.umami.track("Bought items from shop");
+
+              // Return modified response for the purchase
+              return new Response(JSON.stringify(responseData), {
+                  status: 200,
+                  statusText: 'OK',
+                  headers: { 'Content-Type': 'application/json' }
+              });
           }
 
-          // Default fetch behavior for all other requests
+          // Default fetch behavior if no redirection is needed
           return self.originalFetch.apply(window, args);
+      };
+
+      // Intercept image loading using Image objects
+      const originalImage = window.Image;
+      window.Image = function () {
+          const img = new originalImage();
+
+          // When the image source is set
+          const originalSrcSetter = Object.getOwnPropertyDescriptor(img, 'src').set;
+
+          Object.defineProperty(img, 'src', {
+              set: function (url) {
+                  console.log('Intercepted image URL via Image tag:', url);
+
+                  // Check if this is one of the images we want to intercept and redirect
+                  if (url === 'https://moviestarplanet2.fr/img/main-bg.jpg' ||
+                      url === 'https://moviestarplanet2.fr/img/features/1_Welcome_2048.png' ||
+                      url === 'https://moviestarplanet2.fr/img/features/Shop_Dress%20Up.png') {
+                      console.log('Redirecting image via Image tag:', url);
+                      url = 'https://images3.alphacoders.com/118/1181423.jpg';  // Redirect image
+                  }
+
+                  // Set the modified image source
+                  originalSrcSetter.call(img, url);
+              }
+          });
+
+          return img;
       };
   }
 
   restore() {
+      // Restore the original fetch and Image behavior
       window.fetch = this.originalFetch;
+      window.Image = window.originalImage;
   }
 }
 
