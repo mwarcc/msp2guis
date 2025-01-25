@@ -285,7 +285,7 @@ class MSP2Client {
                 await fetch(
                     `https://eu.mspapis.com/pets/v1/pets/${profileId}/interactions`,
                     {
-                        method: 'PUT',
+                        method: 'POST',
                         headers: {
                             'authorization': `Bearer ${token}`,
                             'content-type': 'application/json',
