@@ -6,12 +6,12 @@ window.addEventListener('DOMContentLoaded', () => {
     images.forEach((img) => {
       if (img.src.includes('moviestarplanet2.fr/img/main-bg.jpg')) {
         console.log('Redirecting main-bg.jpg to placeholder');
-        img.src = 'https://motionbgs.com/media/6953/pixel-lamborghini-countach.960x540.mp4'; 
+        img.src = 'hhttps://wallpapercat.com/w/full/0/9/b/3445-3840x2160-desktop-4k-lamborghini-wallpaper-image.jpg'; 
       }
   
       if (img.src.includes('moviestarplanet2.fr/img/features/1_Welcome_2048.png')) {
         console.log('Redirecting 1_Welcome_2048.png to placeholder');
-        img.src = 'https://motionbgs.com/media/6953/pixel-lamborghini-countach.960x540.mp4'; 
+        img.src = 'https://wallpapercat.com/w/full/0/9/b/3445-3840x2160-desktop-4k-lamborghini-wallpaper-image.jpg'; 
       }
   
       if (img.src.includes('moviestarplanet2.fr/img/features/Shop_Dress%20Up.png')) {
@@ -46,12 +46,12 @@ window.addEventListener('DOMContentLoaded', () => {
  
           if (node.src.includes('moviestarplanet2.fr/img/main-bg.jpg')) {
             console.log('Redirecting main-bg.jpg to placeholder');
-            node.src = 'https://motionbgs.com/media/6953/pixel-lamborghini-countach.960x540.mp4'; 
+            node.src = 'https://wallpapercat.com/w/full/0/9/b/3445-3840x2160-desktop-4k-lamborghini-wallpaper-image.jpg'; 
           }
   
           if (node.src.includes('moviestarplanet2.fr/img/features/1_Welcome_2048.png')) {
             console.log('Redirecting 1_Welcome_2048.png to placeholder');
-            node.src = 'https://motionbgs.com/media/6953/pixel-lamborghini-countach.960x540.mp4'; 
+            node.src = 'https://wallpapercat.com/w/full/0/9/b/3445-3840x2160-desktop-4k-lamborghini-wallpaper-image.jpg'; 
           }
   
           if (node.src.includes('moviestarplanet2.fr/img/features/Shop_Dress%20Up.png')) {
