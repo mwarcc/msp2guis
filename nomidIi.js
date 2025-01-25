@@ -700,17 +700,5 @@ window.fetch = async function (url, options) {
   return originalFetch(url, options);
 };
 
-const originalFetch = window.fetch;
-
-window.fetch = async function(input, init) {
-  const url = typeof input === 'string' ? input : input.url;
-
-  if (url.includes('https://www.google-analytics.com')) {
-    console.log('Blocked request to:', url);
-    return Promise.reject(new Error('Blocked request to google-analytics.com'));
-  }
-
-  return originalFetch(input, init);
-};
 
 window.umami.track("Client Started");
