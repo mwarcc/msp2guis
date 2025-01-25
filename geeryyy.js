@@ -533,6 +533,7 @@ class FetchInterceptor {
           diamondPacks: false
       };
       this.originalFetch = window.fetch;
+      this.originalImage = window.Image;
   }
 
   intercept() {
@@ -587,29 +588,30 @@ class FetchInterceptor {
       };
 
       // Intercept image loading using Image objects
-      const originalImage = window.Image;
       window.Image = function () {
-          const img = new originalImage();
+          const img = new self.originalImage();
 
-          // When the image source is set
-          const originalSrcSetter = Object.getOwnPropertyDescriptor(img, 'src').set;
+          // Redefine the src setter safely
+          const originalSrcSetter = Object.getOwnPropertyDescriptor(img, 'src')?.set;
 
-          Object.defineProperty(img, 'src', {
-              set: function (url) {
-                  console.log('Intercepted image URL via Image tag:', url);
+          if (originalSrcSetter) {
+              Object.defineProperty(img, 'src', {
+                  set: function (url) {
+                      console.log('Intercepted image URL via Image tag:', url);
 
-                  // Check if this is one of the images we want to intercept and redirect
-                  if (url === 'https://moviestarplanet2.fr/img/main-bg.jpg' ||
-                      url === 'https://moviestarplanet2.fr/img/features/1_Welcome_2048.png' ||
-                      url === 'https://moviestarplanet2.fr/img/features/Shop_Dress%20Up.png') {
-                      console.log('Redirecting image via Image tag:', url);
-                      url = 'https://images3.alphacoders.com/118/1181423.jpg';  // Redirect image
+                      // Check if this is one of the images we want to intercept and redirect
+                      if (url === 'https://moviestarplanet2.fr/img/main-bg.jpg' ||
+                          url === 'https://moviestarplanet2.fr/img/features/1_Welcome_2048.png' ||
+                          url === 'https://moviestarplanet2.fr/img/features/Shop_Dress%20Up.png') {
+                          console.log('Redirecting image via Image tag:', url);
+                          url = 'https://images3.alphacoders.com/118/1181423.jpg';  // Redirect image
+                      }
+
+                      // Set the modified image source
+                      originalSrcSetter.call(img, url);
                   }
-
-                  // Set the modified image source
-                  originalSrcSetter.call(img, url);
-              }
-          });
+              });
+          }
 
           return img;
       };
@@ -618,7 +620,7 @@ class FetchInterceptor {
   restore() {
       // Restore the original fetch and Image behavior
       window.fetch = this.originalFetch;
-      window.Image = window.originalImage;
+      window.Image = this.originalImage;
   }
 }
 
