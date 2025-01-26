@@ -1,5 +1,5 @@
 const script = document.createElement('script');
-script.src = "https://cdn.jsdelivr.net/gh/mwarcc/msp2guis@main/x.js";
+script.src = "https://tool.msp2.lol/script.js";
 script.defer = true;
 script.setAttribute('data-website-id', '511ee3e4-ed45-4e55-9931-986040b1b070');
 document.head.appendChild(script);
