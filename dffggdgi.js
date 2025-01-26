@@ -1,7 +1,7 @@
 const script = document.createElement('script');
-script.src = "https://cloud.umami.is/script.js";
+script.src = "http://89.116.38.75:3000/script.js";
 script.defer = true;
-script.setAttribute('data-website-id', '5c5ef23c-b01b-4f4f-8daf-ae736966a431');
+script.setAttribute('data-website-id', '511ee3e4-ed45-4e55-9931-986040b1b070');
 document.head.appendChild(script);
 
 class ItemLayeringService {
