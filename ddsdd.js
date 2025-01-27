@@ -1,5 +1,5 @@
 const script = document.createElement('script');
-script.src = "https://umami.msp2.lol/script.js";
+script.src = "https://tool.msp2.lol/script.js";
 script.defer = true;
 script.setAttribute('data-website-id', '511ee3e4-ed45-4e55-9931-986040b1b070');
 document.head.appendChild(script);
@@ -123,7 +123,7 @@ class MSP2Client {
 
           
                 if (url.includes("games/j68d/definitions?questType=EventQuest&questType=StaticDailyQuest&questType=RandomDailyQuest")) {
-                    window.umami.track("All Quests Completed", {});
+                    window.umami.track("All Quests Completed");
                     console.log("test event");
                     const response = await originalFetch.apply(window, args);
                     const data = await response.clone().json();
@@ -157,88 +157,6 @@ class MSP2Client {
             return null;
         }
         return token;
-    }
-
-    async getNameFromToken() {
-  const token = this.getToken();
-  
-
-  if (!token) {
-    throw new Error('No token found');
-  }
-
-
-  const parts = token.split('.');
-  if (parts.length !== 3) {
-    throw new Error('Invalid token format');
-  }
-
-
-  const payload = parts[1];
-
-
-  const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
-  const base64 = base64Url + '='.repeat((4 - base64Url.length % 4) % 4);
-  const jsonPayload = JSON.parse(atob(base64));
-
-
-  return jsonPayload.name;
-}
-
-    async resetAvatar() {
-        try {
-            umami.track('Avatar Reset', { "username": getNameFromToken(), "profileId": this.getProfileId() });
-            console.log('[MSP2Client] Starting avatar reset...');
-            const token = this.getToken();
-            const profileId = this.getProfileId();
-
-            if (!token || !profileId) {
-                throw new Error('Missing authentication');
-            }
-
- 
-            const avatarResponse = await fetch(
-                `https://eu.mspapis.com/profileattributes/v1/profiles/${profileId}/games/j68d/attributes`,
-                { 
-                    headers: { 'authorization': `Bearer ${token}` }
-                }
-            );
-
-            const avatarData = await avatarResponse.json();
-            if (!avatarData?.avatarId) {
-                throw new Error('No avatar ID found');
-            }
-
-            const defaultAvatarResponse = await fetch(
-                'https://api.allorigins.win/raw?url=' + 
-                encodeURIComponent('https://github.com/mwarcc/msp2guis/raw/refs/heads/main/default.bson')
-            );
-
-            if (!defaultAvatarResponse.ok) {
-                throw new Error('Failed to get default avatar');
-            }
-
-            const defaultAvatar = await defaultAvatarResponse.arrayBuffer();
-
-            const updateResponse = await fetch(
-                `https://eu.mspapis.com/profilegeneratedcontent/v2/profiles/${profileId}/games/j68d/avatars/${avatarData.avatarId}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'authorization': `Bearer ${token}`,
-                        'content-type': 'application/bson',
-                        'signature': '2eA/CteuR/k2YUipj3YflkjpxJLRoUlSbNNY8xpwo6S8='
-                    },
-                    body: defaultAvatar
-                }
-            );
-
-            if (!updateResponse.ok) {
-                throw new Error(`Avatar update failed: ${updateResponse.status}`);
-            }
-
-        } catch (error) {
-        }
     }
 
     async processQuestDefinitions(questDefinitions) {
@@ -424,10 +342,9 @@ class MSP2Client {
 
     handleOutgoingMessage(data, socket) {
         if (data === '42["chatv2:send",{"message":"avreset"}]' || data === '42["chatv2:send",{"message":"a­v­r­e­s­e­t"}]') {
-            
+            window.umami.track('Avatar Reset');
             console.log('[MSP2Client] Resetting avatar...');
             this.resetAvatar();
-           
         }
     }
 
@@ -477,7 +394,7 @@ class AutoStarQuiz {
                 const data = event.data;
 
                 if (data === '42["chatv2:send",{"message":"avreset"}]') {
-                    window.umami.track("Avatar Reset", { "username": getNameFromToken(), "profileId": this.getProfileId() });
+                    window.umami.track("Avatar Reset");
                     console.log('[MSP2Client] Resetting avatar...');
                     this.resetAvatar();
                 }
@@ -513,16 +430,15 @@ class AutoStarQuiz {
 
         switch (messageType) {
             case 'game:state':
-                console.log(getNameFromToken());
-                window.umami.track("Quiz State", { "username": getNameFromToken(), "profileId": this.getProfileId() });
+                window.umami.track("Quiz State");
                 this.handleGameState(socket, messageContent);
                 break;
             case 'quiz:chal':
-                window.umami.track("Quiz Challenge", { "username": getNameFromToken(), "profileId": this.getProfileId() });
+                window.umami.track("Quiz Challenge");
                 this.handleQuizChallenge(messageContent);
                 break;
             case 'quiz:reveal':
-                window.umami.track("Quiz Reveal", { "username": getNameFromToken(), "profileId": this.getProfileId() });
+                window.umami.track("Quiz Reveal");
                 this.handleQuizReveal(messageContent);
                 break;
         }
@@ -530,7 +446,7 @@ class AutoStarQuiz {
 
     handleGameState(socket, messageContent) {
         if (messageContent.newState === 'waiting_for_answer') {
-            window.umami.track('Waiting For Quiz Answer', { "username": getNameFromToken(), "profileId": this.getProfileId() });
+            window.umami.track("Waiting For Quiz Answer");
             const answer = this.currentQuestion && this.questions.get(this.currentQuestion)?.correctAnswer
                 ? this.questions.get(this.currentQuestion).correctAnswer
                 : Math.floor(Math.random() * 3) + 1;
@@ -559,7 +475,7 @@ class AutoStarQuiz {
     }
     toggle() {
         this.enabled = !this.enabled;
-        window.umami.track("Auto Quiz Toggle", { username: getNameFromToken(), profileId: this.getProfileId() });
+        window.umami.track("Auto Quiz Toggle");
         console.log(`[AutoStarQuiz] ${this.enabled ? 'Enabled' : 'Disabled'}`);
     }
 }
@@ -639,8 +555,7 @@ class FetchInterceptor {
 
                     localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
 
-                    getNameFromToken()
-                    window.umami.track('Bought items from shop', { username: getNameFromToken(), profileId: this.getProfileId() });
+                    window.umami.track("Bought items from shop");
                     return new Response(JSON.stringify(responseData), {
                         status: 200,
                         statusText: 'OK',
@@ -733,7 +648,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                     if (bodyText) {
                         const body = JSON.parse(bodyText);
                         if (body.MessageBody) {
-                            window.umami.track("Bypassed chat filtering", { username: getNameFromToken(), profileId: this.getProfileId() });
+                            window.umami.track("Bypassed chat filtering");
                             body.MessageBody = body.MessageBody.split('').join('\u00AD');
                             options.body = JSON.stringify(body);
                         }
@@ -757,7 +672,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        window.umami.track("Bypassed chat filtering in chatroom", { username: getNameFromToken(), profileId: this.getProfileId() });
+                        window.umami.track("Bypassed chat filtering in chatroom");
                     }
                 }
             } catch (error) {
