@@ -159,32 +159,7 @@ class MSP2Client {
         return token;
     }
 
-   getNameFromToken() {
-
-  const token = this.getToken();
   
-
-  if (!token) {
-    throw new Error('No token found');
-  }
-
-
-  const parts = token.split('.');
-  if (parts.length !== 3) {
-    throw new Error('Invalid token format');
-  }
-
-
-  const payload = parts[1];
-
-
-  const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
-  const base64 = base64Url + '='.repeat((4 - base64Url.length % 4) % 4);
-  const jsonPayload = JSON.parse(atob(base64));
-
-
-  return jsonPayload.name;
-}
 
     async processQuestDefinitions(questDefinitions) {
         const token = this.getToken();
@@ -339,6 +314,33 @@ class MSP2Client {
             return null;
         }
     }
+
+     getNameFromToken() {
+
+  const token = this.getToken();
+  
+
+  if (!token) {
+    throw new Error('No token found');
+  }
+
+
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    throw new Error('Invalid token format');
+  }
+
+
+  const payload = parts[1];
+
+
+  const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
+  const base64 = base64Url + '='.repeat((4 - base64Url.length % 4) % 4);
+  const jsonPayload = JSON.parse(atob(base64));
+
+
+  return jsonPayload.name;
+}
 
     interceptWebSocket() {
         const originalWebSocket = window.WebSocket;
@@ -699,6 +701,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
+                        console.log(this.getProfileId());
                         console.log(this.getNameFromToken());
                         window.umami.track("Bypassed chat filtering in chatroom", { username: this.getNameFromToken(), profileId: this.getProfileId(), message: message});
                     }
