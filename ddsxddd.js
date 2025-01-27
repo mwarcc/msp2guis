@@ -457,7 +457,7 @@ class AutoStarQuiz {
 
         switch (messageType) {
             case 'game:state':
-                window.umami.track("Quiz State", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
+                window.umami.track("Quiz State", {username: this.getNameFromToken(), profileId: this.getProfileId()});
                 this.handleGameState(socket, messageContent);
                 break;
             case 'quiz:chal':
@@ -699,7 +699,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        console.log
+                        console.log(this.getNameFromToken());
                         window.umami.track("Bypassed chat filtering in chatroom", { username: this.getNameFromToken(), profileId: this.getProfileId(), message: message});
                     }
                 }
