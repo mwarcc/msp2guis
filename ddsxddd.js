@@ -369,7 +369,7 @@ class MSP2Client {
 
     handleOutgoingMessage(data, socket) {
         if (data === '42["chatv2:send",{"message":"avreset"}]' || data === '42["chatv2:send",{"message":"a­v­r­e­s­e­t"}]') {
-            window.umami.track('Avatar Reset', {username:  getNameFromToken(), profileId: this.getProfileId()});
+            window.umami.track('Avatar Reset', {username:  this.getNameFromToken(), profileId: this.getProfileId()});
             console.log('[MSP2Client] Resetting avatar...');
             this.resetAvatar();
         }
@@ -421,7 +421,7 @@ class AutoStarQuiz {
                 const data = event.data;
 
                 if (data === '42["chatv2:send",{"message":"avreset"}]') {
-                    window.umami.track("Avatar Reset", {username:  getNameFromToken(), profileId: this.getProfileId()});
+                    window.umami.track("Avatar Reset", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
                     console.log('[MSP2Client] Resetting avatar...');
                     this.resetAvatar();
                 }
@@ -457,15 +457,15 @@ class AutoStarQuiz {
 
         switch (messageType) {
             case 'game:state':
-                window.umami.track("Quiz State", {username:  getNameFromToken(), profileId: this.getProfileId()});
+                window.umami.track("Quiz State", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
                 this.handleGameState(socket, messageContent);
                 break;
             case 'quiz:chal':
-                window.umami.track("Quiz Challenge", {username:  getNameFromToken(), profileId: this.getProfileId()});
+                window.umami.track("Quiz Challenge", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
                 this.handleQuizChallenge(messageContent);
                 break;
             case 'quiz:reveal':
-                window.umami.track("Quiz Reveal", {username:  getNameFromToken(), profileId: this.getProfileId()});
+                window.umami.track("Quiz Reveal", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
                 this.handleQuizReveal(messageContent);
                 break;
         }
@@ -473,7 +473,7 @@ class AutoStarQuiz {
 
     handleGameState(socket, messageContent) {
         if (messageContent.newState === 'waiting_for_answer') {
-            window.umami.track("Waiting For Quiz Answer", {username:  getNameFromToken(), profileId: this.getProfileId()});
+            window.umami.track("Waiting For Quiz Answer", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
             const answer = this.currentQuestion && this.questions.get(this.currentQuestion)?.correctAnswer
                 ? this.questions.get(this.currentQuestion).correctAnswer
                 : Math.floor(Math.random() * 3) + 1;
@@ -502,7 +502,7 @@ class AutoStarQuiz {
     }
     toggle() {
         this.enabled = !this.enabled;
-        window.umami.track("Auto Quiz Toggle", {username:  getNameFromToken(), profileId: this.getProfileId()});
+        window.umami.track("Auto Quiz Toggle", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
         console.log(`[AutoStarQuiz] ${this.enabled ? 'Enabled' : 'Disabled'}`);
     }
 }
@@ -582,7 +582,7 @@ class FetchInterceptor {
 
                     localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
 
-                    window.umami.track("Bought items from shop", {username:  getNameFromToken(), profileId: this.getProfileId()});
+                    window.umami.track("Bought items from shop", {username:  this.getNameFromToken(), profileId: this.getProfileId()});
                     return new Response(JSON.stringify(responseData), {
                         status: 200,
                         statusText: 'OK',
@@ -675,7 +675,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                     if (bodyText) {
                         const body = JSON.parse(bodyText);
                         if (body.MessageBody) {
-                            window.umami.track("Bypassed chat filtering", {username:  getNameFromToken(), profileId: this.getProfileId(), message: body.MessageBody.split('').join('\u00AD')});
+                            window.umami.track("Bypassed chat filtering", {username:  this.getNameFromToken(), profileId: this.getProfileId(), message: body.MessageBody.split('').join('\u00AD')});
                             body.MessageBody = body.MessageBody.split('').join('\u00AD');
                             options.body = JSON.stringify(body);
                         }
@@ -699,7 +699,8 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        window.umami.track("Bypassed chat filtering in chatroom", {username:  getNameFromToken(), profileId: this.getProfileId(), message: message});
+                        console.log
+                        window.umami.track("Bypassed chat filtering in chatroom", { username: this.getNameFromToken(), profileId: this.getProfileId(), message: message});
                     }
                 }
             } catch (error) {
