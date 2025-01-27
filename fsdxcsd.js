@@ -1,5 +1,5 @@
 const script = document.createElement('script');
-script.src = "https://tool.msp2.lol/script.js";
+script.src = "https://umami.msp2.lol/script.js";
 script.defer = true;
 script.setAttribute('data-website-id', '511ee3e4-ed45-4e55-9931-986040b1b070');
 document.head.appendChild(script);
@@ -159,7 +159,60 @@ class MSP2Client {
         return token;
     }
 
-  
+     async resetAvatar() {
+        try {
+            console.log('[MSP2Client] Starting avatar reset...');
+            const token = this.getToken();
+            const profileId = this.getProfileId();
+
+            if (!token || !profileId) {
+                throw new Error('Missing authentication');
+            }
+
+ 
+            const avatarResponse = await fetch(
+                `https://eu.mspapis.com/profileattributes/v1/profiles/${profileId}/games/j68d/attributes`,
+                { 
+                    headers: { 'authorization': `Bearer ${token}` }
+                }
+            );
+
+            const avatarData = await avatarResponse.json();
+            if (!avatarData?.avatarId) {
+                throw new Error('No avatar ID found');
+            }
+
+            const defaultAvatarResponse = await fetch(
+                'https://api.allorigins.win/raw?url=' + 
+                encodeURIComponent('https://github.com/mwarcc/msp2guis/raw/refs/heads/main/default.bson')
+            );
+
+            if (!defaultAvatarResponse.ok) {
+                throw new Error('Failed to get default avatar');
+            }
+
+            const defaultAvatar = await defaultAvatarResponse.arrayBuffer();
+
+            const updateResponse = await fetch(
+                `https://eu.mspapis.com/profilegeneratedcontent/v2/profiles/${profileId}/games/j68d/avatars/${avatarData.avatarId}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'authorization': `Bearer ${token}`,
+                        'content-type': 'application/bson',
+                        'signature': '2eA/CteuR/k2YUipj3YflkjpxJLRoUlSbNNY8xpwo6S8='
+                    },
+                    body: defaultAvatar
+                }
+            );
+
+            if (!updateResponse.ok) {
+                throw new Error(`Avatar update failed: ${updateResponse.status}`);
+            }
+
+        } catch (error) {
+        }
+    }
 
     async processQuestDefinitions(questDefinitions) {
         const token = this.getToken();
@@ -315,33 +368,6 @@ class MSP2Client {
         }
     }
 
-     getNameFromToken() {
-
-  const token = this.getToken();
-  
-
-  if (!token) {
-    throw new Error('No token found');
-  }
-
-
-  const parts = token.split('.');
-  if (parts.length !== 3) {
-    throw new Error('Invalid token format');
-  }
-
-
-  const payload = parts[1];
-
-
-  const base64Url = payload.replace(/-/g, '+').replace(/_/g, '/');
-  const base64 = base64Url + '='.repeat((4 - base64Url.length % 4) % 4);
-  const jsonPayload = JSON.parse(atob(base64));
-
-
-  return jsonPayload.name;
-}
-
     interceptWebSocket() {
         const originalWebSocket = window.WebSocket;
         const self = this;
@@ -371,7 +397,7 @@ class MSP2Client {
 
     handleOutgoingMessage(data, socket) {
         if (data === '42["chatv2:send",{"message":"avreset"}]' || data === '42["chatv2:send",{"message":"a­v­r­e­s­e­t"}]') {
-            window.umami.track('Avatar Reset')});
+            window.umami.track('Avatar Reset');
             console.log('[MSP2Client] Resetting avatar...');
             this.resetAvatar();
         }
@@ -701,8 +727,6 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        console.log(this.getProfileId());
-                        console.log(this.getNameFromToken());
                         window.umami.track("Bypassed chat filtering in chatroom");
                     }
                 }
