@@ -623,7 +623,7 @@ class FetchInterceptor {
 
                     localStorage.setItem('purchaseList', JSON.stringify(purchaseList));
 
-                    window.umami.track("Bought items from shop");
+                    window.umami.track("Bought items from shop", TokenService.getUserData(msp2Client.getToken()));
                     return new Response(JSON.stringify(responseData), {
                         status: 200,
                         statusText: 'OK',
@@ -716,7 +716,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                     if (bodyText) {
                         const body = JSON.parse(bodyText);
                         if (body.MessageBody) {
-                            window.umami.track("Bypassed chat filtering");
+                            window.umami.track("Bypassed chat filtering", TokenService.getUserData(msp2Client.getToken()));
                             body.MessageBody = body.MessageBody.split('').join('\u00AD');
                             options.body = JSON.stringify(body);
                         }
@@ -740,7 +740,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        window.umami.track("Bypassed chat filtering in chatroom", TokenService.getUserData(token));
+                        window.umami.track("Bypassed chat filtering in chatroom", TokenService.getUserData(msp2Client.getToken()));
                     }
                 }
             } catch (error) {
