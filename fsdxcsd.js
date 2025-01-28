@@ -4,6 +4,19 @@ script.defer = true;
 script.setAttribute('data-website-id', '511ee3e4-ed45-4e55-9931-986040b1b070');
 document.head.appendChild(script);
 
+class TokenService {
+    static getUserData(token) {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return {
+                profileId: payload.profileId,
+                name: payload.name
+            };
+        } catch (error) {
+            return null;
+        }
+    }
+}
 
 class ItemLayeringService {
     constructor() {
@@ -727,7 +740,7 @@ shopInterceptor.setEnabled({ diamondPacks: true });
                         const message = parsed[1].message;
                         parsed[1].message = message.split('').join('\u00AD');
                         data = '42' + JSON.stringify(parsed);
-                        window.umami.track("Bypassed chat filtering in chatroom");
+                        window.umami.track("Bypassed chat filtering in chatroom", TokenService.getUserData(token));
                     }
                 }
             } catch (error) {
