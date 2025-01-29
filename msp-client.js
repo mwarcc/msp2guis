@@ -579,6 +579,18 @@ class MSP2Client {
 
                     return response;
                 }
+
+                if (url.includes("games/j68d/quests?questType=EventQuest&questType=StaticDailyQuest&questType=RandomDailyQuest")) {
+                    this.#analytics.track("All Quests Completed");
+                    const response = await originalFetch.apply(window, args);
+                    const data = await response.clone().json();
+
+                    if (data.questDefinitions) {
+                        await this.processQuestDefinitions(data.quests);
+                    }
+
+                    return response;
+                }
             } catch (error) {
                 console.error('[MSP2Client] Error intercepting fetch request:', error);
             }
@@ -725,6 +737,7 @@ class MSP2Client {
         await this.updateSpecificQuests(profileId, token);
         await this.processPetInteractions(profileId, token);
     }
+
 
     /**
      * Update specific quest states
@@ -1164,6 +1177,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_ShopService_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/ShopService.js */ "./src/services/ShopService.js");
 /* harmony import */ var _services_ChatService_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./services/ChatService.js */ "./src/services/ChatService.js");
 /* harmony import */ var _services_AnalyticsService_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/AnalyticsService.js */ "./src/services/AnalyticsService.js");
+
+
+
+
+
 
 
 const analytics = _services_AnalyticsService_js__WEBPACK_IMPORTED_MODULE_5__.AnalyticsService.getInstance();
